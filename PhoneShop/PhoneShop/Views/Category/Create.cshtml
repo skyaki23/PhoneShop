@@ -1,0 +1,117 @@
+﻿
+@{
+    var imageURL = "/Content/images/system/placeholder-image.png";
+}
+
+<h2>新增種類</h2>
+
+<form id="createCategory">
+    <div class="row">
+        <div class="col-md-8">
+            <div class="form-group">
+                <label>名稱</label>
+                <input class="form-control" name="Name" />
+            </div>
+            <div class="form-group">
+                <label>圖片</label>
+                <input type="hidden" id="ImageURL" name="ImageURL" />
+                <input class="form-control" id="imageUpload" name="Image" type="file" accept=".png, .jpg" />
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="thumb">
+                <img class="img-thumbnail img-fluid" id="categoryImage" src="@imageURL" />
+            </div>
+        </div>
+    </div>
+
+    <button id="saveBtn" type="button" class="btn btn-primary">儲存</button>
+    <button id="cancelBtn" type="button" class="btn btn-primary">取消</button>
+</form>
+
+<script>
+    $("#imageUpload").change(function () {
+        var element = this;
+        var formData = new FormData();
+        var totalFiles = element.files.length;
+        for (var i = 0; i < totalFiles; i++) {
+            var file = element.files[i];
+            formData.append("Photo", file);
+        }
+        $.ajax({
+            type: "POST",
+            url: '@Url.Action("UploadImage", "Shared")',
+            dataType: "json",
+            data: formData,
+            contentType: false,
+            processData: false
+        })
+        .done(function (response) {
+            console.log(response);
+            if (response.Success) {
+                $("#ImageURL").val(response.ImageURL);
+                $("#categoryImage").attr("src", response.ImageURL);
+            }
+        })
+        .fail(function (XMLHttpRequest, textStatus, errorThrom) {
+            alert("FAIL");
+        });
+    });
+
+    $("#createCategory").validate({
+        rules: {
+            Name: {
+                required: true,
+                minlength: 1,
+                maxlength: 50
+            }
+        },
+        messages: {
+            Name: {
+                required: '名稱不可為空白',
+                minlength: '名稱字數下限為1',
+                maxlength: '名稱字數上限為50'
+            }
+        }
+    });
+
+    $("#saveBtn").click(function () {
+        if ($("#createCategory").valid()) {
+            $.ajax({
+                type: 'POST',
+                url: '@Url.Action("Create", "Category")',
+                data: $("#createCategory").serialize()
+            })
+            .done(function (response) {
+                $("#tableContainer").html(response);
+                $("#actionContainer").html("");
+
+                focusAction("tableContainer");
+            })
+            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                swal({
+                    title: "警告",
+                    text: "請輸入所有欄位",
+                    icon: "warning",
+                    buttons: true,
+                    dangerMode: true
+                });
+            });
+        }
+        else {
+            swal({
+                title: "警告",
+                text: "請輸入有效資料",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true
+            });
+        }
+    });
+
+    $("#cancelBtn").click(function () {
+        $("#actionContainer").html("");
+
+        focusAction("tableContainer");
+    });
+</script>

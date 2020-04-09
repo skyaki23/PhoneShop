@@ -1,0 +1,32 @@
+﻿
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.19.1/jquery.validate.min.js"></script>
+
+<section>
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <h2>種類</h2>
+            </div>
+        </div>
+        <div id="tableContainer">
+            @{
+                Html.RenderAction("CategoryTable");
+            }
+        </div>
+
+        <hr />
+
+        <div id="actionContainer">
+
+        </div>
+    </div>
+</section>
+
+<script>
+    function focusAction(controlToFocus) {
+        $('html, body').animate({
+            scrollTop: $("#" + controlToFocus).offset().top - 100
+        }, 1000);
+    }
+</script>

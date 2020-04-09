@@ -1,0 +1,164 @@
+﻿@model PhoneShop.ViewModels.CategorySearchViewModel
+
+<div>
+    <form method="post">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="form-group">
+                    <label>搜尋</label>
+                    <input class="form-control" id="searchText" name="Search" value="@Model.SearchTerm" />
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>動作</label>
+                    <div class="row">
+                        <div class="col-md-4 pr-0">
+                            <button class="btn btn-primary form-control" type="button" id="searchBtn">搜尋</button>
+                        </div>
+                        <div class="col-md-4 pr-0">
+                            <button class="btn btn-primary form-control" type="button" id="resetBtn">重設</button>
+                        </div>
+                        <div class="col-md-4 pr-0">
+                            <button class="btn btn-primary form-control" type="button" id="newBtn">新增</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th class="font-weight-bold">種類</th>
+                <th class="font-weight-bold">產品</th>
+                <th class="font-weight-bold">動作</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Categories != null && Model.Categories.Count > 0)
+            {
+                foreach (var category in Model.Categories)
+                {
+                    <tr>
+                        <td>@category.Name</td>
+                        <td>
+                            @category.Products.Count
+                            <br />
+                            @foreach (var product in category.Products)
+                            {
+                                <span>@product.Name, </span>
+                            }
+                        </td>
+                        <td class="wrap-td">
+                            <button class="editBtn" data-id="@category.ID">修改</button>
+                            <button class="deleteBtn" data-id="@category.ID">刪除</button>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr><td colspan="3" class="text-danger">種類為空</td></tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script>
+    $("#newBtn").click(function () {
+		$.ajax({
+			url: '@Url.Action("Create", "Category")'
+		})
+        .done(function (response) {
+            $("#actionContainer").html(response);
+
+            focusAction("actionContainer");
+        })
+        .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+        	alert("FAIL");
+        });
+    });
+
+    $(".editBtn").click(function () {
+		$.ajax({
+			url: '@Url.Action("Edit", "Category")',
+			data: {
+				ID: $(this).attr('data-id')
+			}
+		})
+        .done(function (response) {
+            $("#actionContainer").html(response);
+
+            focusAction("actionContainer");
+        })
+        .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+        	alert("FAIL");
+        });
+    });
+
+    $(".deleteBtn").click(function () {
+        swal({
+            title: "確定?",
+            text: "確定刪除此種類?",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+        .then((willDelete) => {
+            if (willDelete) {
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("Delete", "Category")',
+                    data: {
+                        ID: $(this).attr("data-id")
+                    }
+                })
+                .done(function (response) {
+                    $("#tableContainer").html(response);
+                    swal("刪除成功", {
+                        icon: "success",
+                    });
+                })
+                .fail(function (XMLHttpRequest, textStatus, errorThrom) {
+                    alert("FAIL");
+                });
+            }
+        });
+    });
+
+    $("#searchBtn").click(function () {
+		var searchValue = $("#searchText").val();
+		$.ajax({
+			url: '@Url.Action("CategoryTable", "Category")',
+			data: {
+				search: searchValue
+			}
+		})
+        .done(function (response) {
+            $("#tableContainer").html(response);
+        })
+        .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+        	alert("FAIL");
+        });
+    });
+
+    $("#resetBtn").click(function () {
+        var searchValue = '';
+		$.ajax({
+			url: '@Url.Action("CategoryTable", "Category")',
+			data: {
+				search: searchValue
+			}
+		})
+        .done(function (response) {
+            $("#tableContainer").html(response);
+        })
+        .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+        	alert("FAIL");
+        });
+	});
+</script>

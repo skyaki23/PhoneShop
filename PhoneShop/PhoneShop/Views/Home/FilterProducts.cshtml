@@ -1,0 +1,86 @@
+﻿@model PhoneShop.ViewModels.FilterProductsViewModel
+
+@{
+    var defaultImageURL = "/Content/images/system/placeholder-image.png";
+}
+
+<div class="filter-shop clearfix">
+    <p class="showing-product float-right text-center">
+        顯示 @(((Model.Pager.CurrentPage - 1) * Model.Pager.PageSize) + 1) 至 @(((Model.Pager.CurrentPage - 1) * Model.Pager.PageSize) + (Model.Products.Count < Model.Pager.PageSize ? Model.Products.Count : Model.Pager.PageSize)) 個 ，共 @Model.Pager.TotalItems 個產品
+    </p>
+</div><!-- /.filte-shop -->
+<div class="container">
+    <div class="row">
+        <div class="col-md-9">
+            @foreach (var product in Model.Products)
+            {
+                var imageURL = string.IsNullOrEmpty(product.ImageURL) ? defaultImageURL : product.ImageURL;
+
+                <div class="col-md-4">
+                    <div class="thumbnail">
+                        <a href="#">
+                            <img src="@imageURL" alt="image" style="height: 250px; width: 200px">
+                        </a>
+                        <div class="caption">
+
+                            <span>@product.Name</span>
+                            <div>
+                                <ins>
+                                    <span>@product.Price</span>
+                                </ins>
+                            </div>
+
+                            <div>
+                                <a class="productAddToCart" data-id="@product.ID">加入購物車</a>
+                            </div>
+                            <a href="#"><i class="fa fa-heart-o"></i></a>
+                        </div>
+                    </div>
+                </div>
+            }
+        </div>
+    </div><!-- /.product-content -->
+</div>
+<div class="container">
+    <div class="row">
+        <div class="col-md-9">
+            @if (Model.Pager != null && Model.Pager.TotalPages > 1)
+            {
+                <div class="product-pagination text-center clearfix">
+                    <ul class="flat-pagination">
+                        @if (Model.Pager.CurrentPage > 1)
+                        {
+                            <li class="prev">
+                                <a data-href="@Url.Action("FilterProducts", "Home", new { pageNo = Model.Pager.CurrentPage - 1, sortBy = Model.SortBy, categoryID = Model.CategoryID })" class="pageDataLink"><i class="fa fa-angle-left"></i></a>
+                            </li>
+                        }
+
+                        @for (var page = Model.Pager.StartPage; page <= Model.Pager.EndPage; page++)
+                        {
+                            string activeClass = Model.Pager.CurrentPage == page ? "active bg-info" : string.Empty;
+
+                            <li class="@activeClass"><a data-href="@Url.Action("FilterProducts", "Home", new { pageNo = page, sortBy = Model.SortBy, categoryID = Model.CategoryID })" title="" class="pageDataLink">@page</a></li>
+                        }
+
+                        @if (Model.Pager.CurrentPage < Model.Pager.TotalPages)
+                        {
+                            <li><a data-href="@Url.Action("FilterProducts", "Home", new { pageNo = Model.Pager.CurrentPage + 1, sortBy = Model.SortBy, categoryID = Model.CategoryID})" class="pageDataLink"><i class="fa fa-angle-right"></i></a></li>
+                        }
+                    </ul><!-- /.flat-pagination -->
+                </div>
+            }
+        </div>
+    </div><!-- /.product-content -->
+</div>
+<input type="hidden" id="SearchTerm" value="@Model.SearchTerm" />
+<input type="hidden" id="SortBy" value="@Model.SortBy" />
+<input type="hidden" id="CategoryID" value="@Model.CategoryID" />
+
+<script>
+    $(".pageDataLink").click(function () {
+        var url = $(this).attr("data-href");
+        if (url != "" || url != undefined) {
+            GetData(url);
+        }
+    });
+</script>

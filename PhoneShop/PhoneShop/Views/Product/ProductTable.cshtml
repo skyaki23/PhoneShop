@@ -1,0 +1,131 @@
+﻿@model PhoneShop.ViewModels.ProductSearchViewModel
+
+<div>
+    <form method="post">
+        <div class="row">
+            <div class="col-md-8">
+                <div class="form-group">
+                    <label>搜尋</label>
+                    <input class="form-control" id="searchText" name="Search" value="@Model.SearchTerm" />
+                </div>
+            </div>
+            <div class="col-md-4">
+                <div class="form-group">
+                    <label>動作</label>
+                    <div class="row">
+                        <div class="col-md-4 pr-0">
+                            <button class="btn btn-primary form-control" type="button" id="searchBtn">搜尋</button>
+                        </div>
+                        <div class="col-md-4 pr-0">
+                            <button class="btn btn-primary form-control" type="button" id="resetBtn">重設</button>
+                        </div>
+                        <div class="col-md-4 pr-0">
+                            <button class="btn btn-primary form-control" type="button" id="newBtn">新增</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </form>
+</div>
+
+<div>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th class="font-weight-bold">產品名稱</th>
+                <th class="font-weight-bold">種類</th>
+                <th class="font-weight-bold">價格</th>
+                <th class="font-weight-bold">動作</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Products != null && Model.Products.Count > 0)
+            {
+                foreach (var product in Model.Products)
+                {
+                    <tr>
+                        <td>@product.Name</td>
+                        <td>
+                            @product.Category.Name
+                        </td>
+                        <td>@product.Price</td>
+                        <td>
+                            <button class="editBtn" data-id="@product.ID">Edit</button>
+                            <button class="deleteBtn" data-id="@product.ID">Delete</button>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td class="text-danger" colspan="4">產品為空</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script>
+    $("#newBtn").click(function () {
+        $.ajax({
+            url: '@Url.Action("Create", "Product")',
+        })
+        .done(function (response) {
+            $("#actionContainer").html(response);
+
+            focusAction("actionContainer");
+        })
+        .fail(function (XMLHttpRequest, textStatus, errorThrom) {
+            alert("FAIL");
+        });
+    });
+
+    $(".editBtn").click(function () {
+        $.ajax({
+            url: '@Url.Action("Edit", "Product")',
+            data: {
+                ID: $(this).attr("data-id")
+            }
+        })
+        .done(function (response) {
+            $("#actionContainer").html(response);
+
+            focusAction("actionContainer");
+        })
+        .fail(function (XMLHttpRequest, textStatus, errorThrom) {
+            alert("FAIL");
+        });
+    });
+
+    $(".deleteBtn").click(function () {
+        swal({
+            title: "確定?",
+            text: "確定刪除此產品?",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
+        })
+        .then((willDelete) => {
+            if (willDelete) {
+                $.ajax({
+                    type: "POST",
+                    url: '@Url.Action("Delete", "Product")',
+                    data: {
+                        ID: $(this).attr("data-id")
+                    }
+                })
+                .done(function (response) {
+                    $("#tableContainer").html(response);
+                    swal("刪除成功", {
+                        icon: "success",
+                    });
+                })
+                .fail(function (XMLHttpRequest, textStatus, errorThrom) {
+                    alert("FAIL");
+                });
+            }
+        });
+    });
+</script>

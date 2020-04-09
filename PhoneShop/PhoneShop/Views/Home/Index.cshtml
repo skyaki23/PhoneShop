@@ -1,0 +1,91 @@
+﻿@using PhoneShop.code
+@model PhoneShop.ViewModels.HomeViewModel
+
+<link href="~/Content/homeStyle.css" rel="stylesheet" />
+
+<div class="page-title parallax">
+    <div class="container">
+        <div class="row">
+            <div class="col-md-12">
+                <div class="page-title-heading">
+                    <h1 class="title">手機商店</h1>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="col-md-3">
+            <div class="sidebar slidebar-shop">
+                <div class="widget widget-search">
+                    <form role="search" method="get" class="search-form" action="@Url.Action("Index", "Home")">
+                        <label>
+                            <input type="search" class="search-field" placeholder="搜尋..." value="@Model.SearchTerm" name="searchTerm">
+                        </label>
+                        <input type="submit" class="search-submit" value="搜尋">
+                    </form>
+                </div><!-- /.widget-search -->
+                <div class="widget widget-sort-by">
+                    <h5 class="widget-title">
+                        產品排序依
+                    </h5>
+                    <ul>
+                        <li><a href="#" data-href="@Url.Action("FilterProducts", "Home", new { sortBy = (int)SortByEnums.Default, categoryID = Model.CategoryID })" class="dataLink @(Model.SortBy.HasValue ? Model.SortBy.Value == (int)SortByEnums.Default ? "active" : string.Empty : string.Empty)">最新</a></li>
+                        <li><a href="#" data-href="@Url.Action("FilterProducts", "Home", new { sortBy = (int)SortByEnums.PriceLowToHigh, categoryID = Model.CategoryID })" class="dataLink @(Model.SortBy.HasValue ? Model.SortBy.Value == (int)SortByEnums.PriceLowToHigh ? "active" : string.Empty : string.Empty)">價錢低至高</a></li>
+                        <li><a href="#" data-href="@Url.Action("FilterProducts", "Home", new { sortBy = (int)SortByEnums.PriceHighToLow, categoryID = Model.CategoryID })" class="dataLink @(Model.SortBy.HasValue ? Model.SortBy.Value == (int)SortByEnums.PriceHighToLow ? "active" : string.Empty : string.Empty)">價錢高至低</a></li>
+                    </ul>
+                </div><!-- /.widget-sort-by -->
+                <div class="widget widget_tag">
+                    <h5 class="widget-title">
+                        種類
+                    </h5>
+                    <div class="tag-list">
+                        @foreach (var category in Model.Categories)
+                        {
+                            <a data-href="@Url.Action("FilterProducts", "Home", new { categoryID = category.ID, sortBy = Model.SortBy })" class="dataLink @(Model.CategoryID.HasValue && Model.CategoryID.Value == category.ID ? "active" : string.Empty)">@category.Name</a>
+                        }
+                    </div>
+                </div>
+                <a href="@Url.Action("Index", "Home")" class="btn btn-danger">重設</a>
+            </div><!-- /.sidebar -->
+        </div><!-- /.col-md-3 -->
+        <div class="col-md-9">
+            <div id="productsDiv">
+                @{
+                    var filterProductsViewModel = new FilterProductsViewModel();
+                    filterProductsViewModel.Products = Model.Products;
+                    filterProductsViewModel.Pager = Model.Pager;
+                    filterProductsViewModel.CategoryID = Model.CategoryID;
+                    filterProductsViewModel.SortBy = Model.SortBy;
+
+                    Html.RenderPartial("FilterProducts", filterProductsViewModel);
+                }
+            </div>
+        </div><!-- /.col-md-9 -->
+    </div><!-- /.row -->
+</div><!-- /.container -->
+
+
+<script>
+    $(".dataLink").click(function () {
+        var url = $(this).attr("data-href");
+
+        if (url != "" || url != undefined) {
+            GetData(url);
+        }
+    });
+
+    function GetData(dUrl) {
+        $.ajax({
+            url: dUrl
+		})
+        .done(function (response) {
+            $("#productsDiv").html(response);
+        })
+        .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+        	alert("FAIL");
+        })
+    }
+</script>
