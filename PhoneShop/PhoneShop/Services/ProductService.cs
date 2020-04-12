@@ -45,6 +45,14 @@ namespace PhoneShop.Services
             }
         }
 
+        public List<Product> GetProducts(List<int> IDs)
+        {
+            using (var context = new PhoneShopContext())
+            {
+                return context.Products.Where(product => IDs.Contains(product.ID)).ToList();
+            }
+        }
+
         public int GetMaximumPrice()
         {
             using (var context = new PhoneShopContext())

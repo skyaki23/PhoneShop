@@ -1,0 +1,57 @@
+﻿@model PhoneShop.ViewModels.OrderViewModel
+
+<div>
+    <table class="table table-striped" style="margin-top: 50px">
+        <thead>
+            <tr>
+                <th class="font-weight-bold">會員</th>
+                <th class="font-weight-bold">下訂時間</th>
+                <th class="font-weight-bold">訂單總價</th>
+                <th class="font-weight-bold">訂單狀態</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model.Orders != null && Model.Orders.Count > 0)
+            {
+                foreach (var order in Model.Orders)
+                {
+                    <tr>
+                        <td>@order.UserID</td>
+                        <td>@order.OrderTime</td>
+                        <td>@order.TotalAmount</td>
+                        <td>@order.Status</td>
+                        <td>
+                            <button class="detailBtn" data-id="@order.ID" data-userid="@order.UserID">詳細</button>
+                        </td>
+                    </tr>
+                }
+            }
+            else
+            {
+                <tr>
+                    <td class="text-danger" colspan="4">訂單為空</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>
+
+<script>
+    $(".detailBtn").click(function () {
+        $.ajax({
+            url: '@Url.Action("Detail", "Order")',
+            data: {
+                ID: $(this).attr("data-id"),
+                UserID: $(this).attr("data-userid")
+            }
+        })
+        .done(function (response) {
+            $("#actionContainer").html(response);
+
+            focusAction("actionContainer");
+        })
+        .fail(function (XMLHttpRequest, textStatus, errorThrom) {
+            alert("FAIL");
+        });
+    });
+</script>

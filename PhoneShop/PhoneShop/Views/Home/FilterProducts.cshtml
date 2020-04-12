@@ -4,6 +4,10 @@
     var defaultImageURL = "/Content/images/system/placeholder-image.png";
 }
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+<script src="~/Scripts/jquery.cookie.js"></script>
+<link href="~/Content/homeStyle.css" rel="stylesheet" />
+
 <div class="filter-shop clearfix">
     <p class="showing-product float-right text-center">
         顯示 @(((Model.Pager.CurrentPage - 1) * Model.Pager.PageSize) + 1) 至 @(((Model.Pager.CurrentPage - 1) * Model.Pager.PageSize) + (Model.Products.Count < Model.Pager.PageSize ? Model.Products.Count : Model.Pager.PageSize)) 個 ，共 @Model.Pager.TotalItems 個產品
@@ -82,5 +86,24 @@
         if (url != "" || url != undefined) {
             GetData(url);
         }
+    });
+
+    var products;
+    $(".productAddToCart").click(function () {
+        var existingCookieData = $.cookie('CartProducts');
+
+        if (existingCookieData != undefined && existingCookieData != "" && existingCookieData != null) {
+            products = existingCookieData.split('-'); // cookie 有 CartProducts ， 分割 - ，回陣列；刷新判斷 products 存在
+        } else {
+            products = []; // cookie 沒有 CartProducts
+        }
+        
+        var productID = $(this).attr("data-id");
+
+        products.push(productID);
+
+        $.cookie("CartProducts", products.join('-'), { path: '/' }); // join("-") 分割 + -
+
+        swal("完成", "產品已加入購物車清單", "success");
     });
 </script>

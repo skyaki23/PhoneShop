@@ -1,4 +1,5 @@
-﻿using PhoneShop.Services;
+﻿using PhoneShop.Models;
+using PhoneShop.Services;
 using PhoneShop.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -48,18 +49,115 @@ namespace PhoneShop.Controllers
             return View(model);
         }
 
-        public ActionResult About()
+        public ActionResult Register()
         {
-            ViewBag.Message = "Your application description page.";
-
             return View();
         }
 
-        public ActionResult Contact()
+        [HttpPost]
+        public ActionResult Register(RegisterMemberViewModel model)
         {
-            ViewBag.Message = "Your contact page.";
+            if (ModelState.IsValid == false)
+            {
+                return View();
+            }
 
+            var member = MemberService.Instance.GetMember(model.UserId);
+
+            if (member == null)
+            {
+                var newMember = new Member();
+                newMember.UserId = model.UserId;
+                newMember.UserPassword = model.UserPassword;
+                newMember.UserEmail = model.UserEmail;
+
+                MemberService.Instance.SaveMember(newMember);
+                return RedirectToAction("Index");
+            }
+
+            ViewBag.Message = "此帳號已被註冊，註冊失敗";
             return View();
+        }
+
+        public ActionResult Login()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        public ActionResult Login(LoginMemberViewModel model)
+        {
+            var member = MemberService.Instance.LoginMember(model.UserId, model.UserPassword);
+
+            if (!model.UserId.Equals("Admin"))
+            {
+                if (member == null)
+                {
+                    ViewBag.Message = "帳號密碼輸入錯誤，登入失敗";
+                    return View();
+                }
+
+                Session["Welcome"] = "歡迎 " + member.UserId + " ~";
+                Session["Member"] = member;
+                return RedirectToAction("Index");
+            }
+            else
+            {
+                Session["Welcome"] = "管理者 " + member.UserId + " ~";
+                Session["Admin"] = member;
+                return RedirectToAction("Index");
+            }
+        }
+
+        public ActionResult Logout()
+        {
+            Session.Clear();
+            return RedirectToAction("Index");
+        }
+
+        public ActionResult ShoppingCart()
+        {
+            ShoppingCartViewModel model = new ShoppingCartViewModel();
+
+            var CartProductsCookie = Request.Cookies["CartProducts"];
+
+            if (CartProductsCookie != null && !string.IsNullOrEmpty(CartProductsCookie.Value))
+            {
+                model.CartProductIDs = CartProductsCookie.Value.Split('-').Select(x => int.Parse(x)).ToList();
+
+                model.CartProducts = ProductService.Instance.GetProducts(model.CartProductIDs.Distinct().ToList());
+
+                model.User = MemberService.Instance.GetMember((Session["Member"] as Member).UserId);
+            }
+
+            return View(model);
+        }
+
+        public JsonResult PlaceOrder(string productIDs)
+        {
+            if (!string.IsNullOrEmpty(productIDs))
+            {
+                var productQuantities = productIDs.Split('-').Select(x => int.Parse(x)).ToList();
+
+                var products = ProductService.Instance.GetProducts(productQuantities.Distinct().ToList());
+
+                Order newOrder = new Order();
+                newOrder.UserID = (Session["Member"] as Member).UserId;
+                newOrder.OrderTime = DateTime.Now;
+                newOrder.TotalAmount = products.Sum(x => x.Price * productQuantities.Where(productID => productID == x.ID).Count());
+                newOrder.Status = "尚未成立";
+
+                newOrder.OrderItems = new List<OrderItem>();
+                newOrder.OrderItems.AddRange(products.Select(x => new OrderItem() { ProductID = x.ID, Quantity = productQuantities.Where(productID => productID == x.ID).Count() }));
+
+                OrderService.Instance.SaveOrder(newOrder);
+
+                return Json(new { success = true }, JsonRequestBehavior.AllowGet);
+            }
+            else
+            {
+                return Json(new { success = false }, JsonRequestBehavior.AllowGet);
+            } 
         }
     }
 }

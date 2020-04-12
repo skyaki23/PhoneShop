@@ -25,4 +25,11 @@ namespace PhoneShop.ViewModels
         public int? CategoryID { get; set; }
         public string SearchTerm { get; set; }
     }
+
+    public class ShoppingCartViewModel
+    {
+        public List<int> CartProductIDs { get; set; }
+        public List<Product> CartProducts { get; set; }
+        public Member User { get; set; }
+    }
 }
