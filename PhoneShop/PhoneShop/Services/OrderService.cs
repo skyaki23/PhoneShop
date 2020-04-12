@@ -25,11 +25,18 @@ namespace PhoneShop.Services
         }
         #endregion
 
-        public List<Order> GetOrders()
+        public List<Order> GetOrders(string UserId)
         {
             using (var context = new PhoneShopContext())
             {
-                return context.Orders.ToList();
+                var orders = context.Orders.ToList();
+
+                if (!string.IsNullOrEmpty(UserId))
+                {
+                    orders = orders.Where(x => x.UserID == UserId).ToList();
+                }
+
+                return orders;
             }
         }
 
@@ -37,7 +44,7 @@ namespace PhoneShop.Services
         {
             using (var context = new PhoneShopContext())
             {
-                return context.Orders.Where(x => x.ID == ID).Include(x => x.OrderItems).Include("OrderItems.Product").FirstOrDefault();
+                return context.Orders.Where(x => x.ID == ID).Include(x => x.OrderItems).Include("OrderItems.Product").FirstOrDefault(); // OrderItems List
             }
         }
 

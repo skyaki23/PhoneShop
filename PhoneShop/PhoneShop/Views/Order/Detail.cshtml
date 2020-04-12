@@ -35,28 +35,34 @@
                         <div class="row">
                             <div class="col-md-4 mb-3">
                                 <label for="UserId">姓名</label>
-                                <input type="text" class="form-control" id="UserId" placeholder="userId" value="@Model.OrderMember.UserId" disabled>
+                                <input type="text" class="form-control" id="UserId" value="@Model.OrderMember.UserId" disabled>
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="col-md-4 mb-3" style="margin-top: 20px">
                                 <label for="UserEmail">信箱</label>
-                                <input type="email" class="form-control" id="UserEmail" placeholder="email@gmail.com" value="@Model.OrderMember.UserEmail" disabled>
+                                <input type="email" class="form-control" id="UserEmail" value="@Model.OrderMember.UserEmail" disabled>
                             </div>
                         </div>
 
                         <div class="row">
                             <div class="col-md-4 mb-3" style="margin-top: 20px">
-                                <label for="address">訂單狀態</label>
-                                <select name="Status" id="changeStatus">
-                                    @foreach (var status in Model.OrderStatuses)
-                                    {
-                                        var isSelectedStatus = (status == Model.Order.Status);
-
-                                        <option @(isSelectedStatus ? "selected" : string.Empty)>@status</option>
-                                    }
-                                </select>
+                                <label for="OrderStatus">訂單狀態</label>
+                                @if (Session["Admin"] != null)
+                                {
+                                    <select name="Status" id="changeStatus">
+                                        @foreach (var status in Model.OrderStatuses)
+                                        {
+                                            var selected = status == Model.Order.Status ? "selected" : string.Empty;
+                                            <option @selected>@status</option>
+                                        }
+                                    </select>
+                                }
+                                else
+                                {
+                                    <input type="text" class="form-control" id="OrderStatus" value="@Model.Order.Status" disabled>
+                                }
                             </div>
                         </div>
                     </form>

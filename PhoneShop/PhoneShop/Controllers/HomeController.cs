@@ -103,6 +103,12 @@ namespace PhoneShop.Controllers
             }
             else
             {
+                if (member == null)
+                {
+                    ViewBag.Message = "管理者帳號密碼輸入錯誤，登入失敗";
+                    return View();
+                }
+
                 Session["Welcome"] = "管理者 " + member.UserId + " ~";
                 Session["Admin"] = member;
                 return RedirectToAction("Index");

@@ -1,4 +1,5 @@
-﻿using PhoneShop.Services;
+﻿using PhoneShop.Models;
+using PhoneShop.Services;
 using PhoneShop.ViewModels;
 using System;
 using System.Collections.Generic;
@@ -20,7 +21,14 @@ namespace PhoneShop.Controllers
         {
             OrderViewModel model = new OrderViewModel();
 
-            model.Orders = OrderService.Instance.GetOrders();
+            string UserId = null;
+
+            if (Session["Member"] != null)
+            {
+                UserId = (Session["Member"] as Member).UserId;
+            }
+  
+            model.Orders = OrderService.Instance.GetOrders(UserId);
 
             return PartialView("OrderTable", model);
         }

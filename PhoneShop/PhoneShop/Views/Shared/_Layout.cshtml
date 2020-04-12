@@ -30,12 +30,13 @@
                         <li>@Html.ActionLink("產品種類", "Index", "Category")</li>
                         <li>@Html.ActionLink("產品", "Index", "Product")</li>
                         <li>@Html.ActionLink("訂單", "Index", "Order")</li>
-                        <li>@Html.ActionLink("管理者登出", "Logout", "Home")</li>
+                        <li>@Html.ActionLink("登出", "Logout", "Home")</li>
                         <li><a href="#">@Session["WelCome"]</a></li>
                     }
                     else
                     {
                         <li>@Html.ActionLink("購物車", "ShoppingCart", "Home")</li>
+                        <li>@Html.ActionLink("訂單", "Index", "Order")</li>
                         <li>@Html.ActionLink("登出", "Logout", "Home")</li>
                         <li><a href="#">@Session["WelCome"]</a></li>
                     }
