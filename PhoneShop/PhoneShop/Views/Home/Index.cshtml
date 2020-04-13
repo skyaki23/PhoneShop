@@ -3,7 +3,8 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
 <script src="~/Scripts/jquery.cookie.js"></script>
-<link href="~/Content/homeStyle.css" rel="stylesheet" />
+<link href="~/Content/stylesheets/font-awesome.css" rel="stylesheet" />
+<link href="~/Content/stylesheets/homeStyle.css" rel="stylesheet" />
 
 <div class="page-title parallax">
     <div class="container">
@@ -34,9 +35,9 @@
                         產品排序依
                     </h5>
                     <ul>
-                        <li><a href="#" data-href="@Url.Action("FilterProducts", "Home", new { sortBy = (int)SortByEnums.Default, categoryID = Model.CategoryID })" class="dataLink @(Model.SortBy.HasValue ? Model.SortBy.Value == (int)SortByEnums.Default ? "active" : string.Empty : string.Empty)">最新</a></li>
-                        <li><a href="#" data-href="@Url.Action("FilterProducts", "Home", new { sortBy = (int)SortByEnums.PriceLowToHigh, categoryID = Model.CategoryID })" class="dataLink @(Model.SortBy.HasValue ? Model.SortBy.Value == (int)SortByEnums.PriceLowToHigh ? "active" : string.Empty : string.Empty)">價錢低至高</a></li>
-                        <li><a href="#" data-href="@Url.Action("FilterProducts", "Home", new { sortBy = (int)SortByEnums.PriceHighToLow, categoryID = Model.CategoryID })" class="dataLink @(Model.SortBy.HasValue ? Model.SortBy.Value == (int)SortByEnums.PriceHighToLow ? "active" : string.Empty : string.Empty)">價錢高至低</a></li>
+                        <li><a href="#" data-href="@Url.Action("FilterProducts", "Home", new { sortBy = (int)SortByEnums.Default, categoryID = Model.CategoryID })" class="dataLink">最新</a></li>
+                        <li><a href="#" data-href="@Url.Action("FilterProducts", "Home", new { sortBy = (int)SortByEnums.PriceLowToHigh, categoryID = Model.CategoryID })" class="dataLink">價錢低至高</a></li>
+                        <li><a href="#" data-href="@Url.Action("FilterProducts", "Home", new { sortBy = (int)SortByEnums.PriceHighToLow, categoryID = Model.CategoryID })" class="dataLink">價錢高至低</a></li>
                     </ul>
                 </div><!-- /.widget-sort-by -->
                 <div class="widget widget_tag">
@@ -69,7 +70,6 @@
     </div><!-- /.row -->
 </div><!-- /.container -->
 
-
 <script>
     $(".dataLink").click(function () {
         var url = $(this).attr("data-href");
@@ -82,12 +82,12 @@
     function GetData(dUrl) {
         $.ajax({
             url: dUrl
-		})
+        })
         .done(function (response) {
             $("#productsDiv").html(response);
         })
         .fail(function (XMLHttpRequest, textStatus, errorThrown) {
-        	alert("FAIL");
+            alert("FAIL");
         })
     }
 </script>

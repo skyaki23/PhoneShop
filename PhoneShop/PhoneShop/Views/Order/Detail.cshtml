@@ -1,7 +1,7 @@
 ﻿@model PhoneShop.ViewModels.OrderDetailViewModel
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
-<link href="~/Content/homeStyle.css" rel="stylesheet" />
+<link href="~/Content/stylesheets/homeStyle.css" rel="stylesheet" />
 
 @if (Model != null && Model.Order != null)
 {
@@ -33,21 +33,21 @@
                     <h4 class="mb-3">會員資料</h4>
                     <form class="needs-validation" novalidate="">
                         <div class="row">
-                            <div class="col-md-4 mb-3">
+                            <div class="col-md-6 mb-3">
                                 <label for="UserId">姓名</label>
                                 <input type="text" class="form-control" id="UserId" value="@Model.OrderMember.UserId" disabled>
                             </div>
                         </div>
 
                         <div class="row">
-                            <div class="col-md-4 mb-3" style="margin-top: 20px">
+                            <div class="col-md-6 mb-3" style="margin-top: 20px">
                                 <label for="UserEmail">信箱</label>
                                 <input type="email" class="form-control" id="UserEmail" value="@Model.OrderMember.UserEmail" disabled>
                             </div>
                         </div>
 
                         <div class="row">
-                            <div class="col-md-4 mb-3" style="margin-top: 20px">
+                            <div class="col-md-6 mb-3" style="margin-top: 20px">
                                 <label for="OrderStatus">訂單狀態</label>
                                 @if (Session["Admin"] != null)
                                 {
@@ -89,7 +89,7 @@
 
                 $("#actionContainer").html("");
 
-                focusAction("tableContainer");    
+                focusAction("tableContainer");
         	}
         	else {
                 swal("失敗", "訂單無法更新", "warning");

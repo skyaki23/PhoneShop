@@ -22,6 +22,7 @@
                 <ul class="nav navbar-nav">
                     @if (Session["Member"] == null && Session["Admin"] == null)
                     {
+                        <li>@Html.ActionLink("購物車", "ShoppingCart", "Home")</li>
                         <li>@Html.ActionLink("註冊", "Register", "Home")</li>
                         <li>@Html.ActionLink("登入", "Login", "Home")</li>
                     }

@@ -6,7 +6,8 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
 <script src="~/Scripts/jquery.cookie.js"></script>
-<link href="~/Content/homeStyle.css" rel="stylesheet" />
+<link href="~/Content/stylesheets/font-awesome.css" rel="stylesheet" />
+<link href="~/Content/stylesheets/homeStyle.css" rel="stylesheet" />
 
 <div class="filter-shop clearfix">
     <p class="showing-product float-right text-center">
@@ -26,18 +27,16 @@
                             <img src="@imageURL" alt="image" style="height: 250px; width: 200px">
                         </a>
                         <div class="caption">
-
-                            <span>@product.Name</span>
+                            <span style="text-align: center; display: block">@product.Name</span>
                             <div>
                                 <ins>
-                                    <span>@product.Price</span>
+                                    <span style="text-align: center; display: block">NT$ @product.Price</span>
                                 </ins>
                             </div>
 
                             <div>
-                                <a class="productAddToCart" data-id="@product.ID">加入購物車</a>
+                                <a class="productAddToCart btn btn-primary" style="text-align: center; display: block" data-id="@product.ID">加入購物車</a>
                             </div>
-                            <a href="#"><i class="fa fa-heart-o"></i></a>
                         </div>
                     </div>
                 </div>
@@ -97,7 +96,7 @@
         } else {
             products = []; // cookie 沒有 CartProducts
         }
-        
+
         var productID = $(this).attr("data-id");
 
         products.push(productID);

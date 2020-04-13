@@ -133,7 +133,14 @@ namespace PhoneShop.Controllers
 
                 model.CartProducts = ProductService.Instance.GetProducts(model.CartProductIDs.Distinct().ToList());
 
-                model.User = MemberService.Instance.GetMember((Session["Member"] as Member).UserId);
+                if (Session["Member"] != null)
+                {
+                    model.User = MemberService.Instance.GetMember((Session["Member"] as Member).UserId);
+                }
+                else
+                {
+                    model.User = null;
+                }
             }
 
             return View(model);
