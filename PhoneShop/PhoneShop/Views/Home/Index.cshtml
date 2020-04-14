@@ -25,11 +25,11 @@
                 <div class="widget widget-search">
                     <form role="search" method="get" class="search-form" action="@Url.Action("Index", "Home")">
                         <label>
-                            <input type="search" class="search-field" placeholder="搜尋..." value="@Model.SearchTerm" name="searchTerm">
+                            <input type="search" class="search-field" placeholder="搜尋..." value="" name="searchTerm">
                         </label>
                         <input type="submit" class="search-submit" value="搜尋">
                     </form>
-                </div><!-- /.widget-search -->
+                </div>
                 <div class="widget widget-sort-by">
                     <h5 class="widget-title">
                         產品排序依
@@ -39,7 +39,7 @@
                         <li><a href="#" data-href="@Url.Action("FilterProducts", "Home", new { sortBy = (int)SortByEnums.PriceLowToHigh, categoryID = Model.CategoryID })" class="dataLink">價錢低至高</a></li>
                         <li><a href="#" data-href="@Url.Action("FilterProducts", "Home", new { sortBy = (int)SortByEnums.PriceHighToLow, categoryID = Model.CategoryID })" class="dataLink">價錢高至低</a></li>
                     </ul>
-                </div><!-- /.widget-sort-by -->
+                </div>
                 <div class="widget widget_tag">
                     <h5 class="widget-title">
                         種類
@@ -52,8 +52,8 @@
                     </div>
                 </div>
                 <a href="@Url.Action("Index", "Home")" class="btn btn-danger">重設</a>
-            </div><!-- /.sidebar -->
-        </div><!-- /.col-md-3 -->
+            </div>
+        </div>
         <div class="col-md-9">
             <div id="productsDiv">
                 @{
@@ -66,9 +66,9 @@
                     Html.RenderPartial("FilterProducts", filterProductsViewModel);
                 }
             </div>
-        </div><!-- /.col-md-9 -->
-    </div><!-- /.row -->
-</div><!-- /.container -->
+        </div>
+    </div>
+</div>
 
 <script>
     $(".dataLink").click(function () {

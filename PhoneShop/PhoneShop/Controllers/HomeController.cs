@@ -46,7 +46,7 @@ namespace PhoneShop.Controllers
 
             model.Pager = new Pager(totalCount, pageNo, pageSize);
 
-            return View(model);
+            return PartialView(model);
         }
 
         public ActionResult Register()

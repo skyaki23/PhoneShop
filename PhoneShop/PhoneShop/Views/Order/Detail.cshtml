@@ -13,6 +13,7 @@
                         <span class="text-muted">訂單清單</span>
                     </h4>
                     <ul class="list-group mb-3">
+                        <li class="list-group-item d-flex justify-content-between">訂單編號: @Model.Order.ID</li>
                         @foreach (var orderItem in Model.Order.OrderItems)
                         {
                             <li class="list-group-item d-flex justify-content-between" data-id="@orderItem.ID">
@@ -51,7 +52,7 @@
                                 <label for="OrderStatus">訂單狀態</label>
                                 @if (Session["Admin"] != null)
                                 {
-                                    <select name="Status" id="changeStatus">
+                                    <select name="Status" id="changeStatus" class="form-control">
                                         @foreach (var status in Model.OrderStatuses)
                                         {
                                             var selected = status == Model.Order.Status ? "selected" : string.Empty;
