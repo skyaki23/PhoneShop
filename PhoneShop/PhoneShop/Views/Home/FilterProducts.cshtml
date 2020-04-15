@@ -9,7 +9,7 @@
 <link href="~/Content/stylesheets/font-awesome.css" rel="stylesheet" />
 <link href="~/Content/stylesheets/homeStyle.css" rel="stylesheet" />
 
-<div class="filter-shop clearfix">
+<div class="filter-shop clearfix" style="float: right">
     @if (Model.Pager.TotalItems > 0)
     {
         <p class="showing-product float-right">
@@ -24,67 +24,60 @@
         </p>
     }
 </div>
-<div class="container">
-    <div class="row">
-        <div class="col-md-9">
-            @foreach (var product in Model.Products)
-            {
-                var imageURL = string.IsNullOrEmpty(product.ImageURL) ? defaultImageURL : product.ImageURL;
 
-                <div class="col-md-4">
-                    <div class="thumbnail">
-                        <a href="#">
-                            <img src="@imageURL" alt="image" style="height: 250px; width: 200px">
-                        </a>
-                        <div class="caption">
-                            <span style="text-align: center; display: block">@product.Name</span>
-                            <div>
-                                <ins>
-                                    <span style="text-align: center; display: block">NT$ @product.Price</span>
-                                </ins>
-                            </div>
+@foreach (var product in Model.Products)
+{
+    var imageURL = string.IsNullOrEmpty(product.ImageURL) ? defaultImageURL : product.ImageURL;
 
-                            <div>
-                                <a class="productAddToCart btn btn-primary" style="text-align: center; display: block" data-id="@product.ID">加入購物車</a>
-                            </div>
-                        </div>
-                    </div>
+    <div class="col-md-4">
+        <div class="thumbnail">
+            <a href="#">
+                <img src="@imageURL" alt="image" style="height: 250px; width: 200px">
+            </a>
+            <div class="caption">
+                <span style="text-align: center; display: block">@product.Name</span>
+                <div>
+                    <ins>
+                        <span style="text-align: center; display: block">NT$ @product.Price</span>
+                    </ins>
                 </div>
-            }
+
+                <div>
+                    <a class="productAddToCart btn btn-primary" style="text-align: center; display: block" data-id="@product.ID">加入購物車</a>
+                </div>
+            </div>
         </div>
     </div>
-</div>
-<div class="container">
-    <div class="row">
-        <div class="col-md-9">
-            @if (Model.Pager != null && Model.Pager.TotalPages > 1)
-            {
-                <div class="product-pagination text-center clearfix">
-                    <ul class="flat-pagination">
-                        @if (Model.Pager.CurrentPage > 1)
-                        {
-                            <li class="prev">
-                                <a data-href="@Url.Action("FilterProducts", "Home", new { pageNo = Model.Pager.CurrentPage - 1, sortBy = Model.SortBy, categoryID = Model.CategoryID })" class="pageDataLink"><i class="fa fa-angle-left"></i></a>
-                            </li>
-                        }
+}
 
-                        @for (var page = Model.Pager.StartPage; page <= Model.Pager.EndPage; page++)
-                        {
-                            string activeClass = Model.Pager.CurrentPage == page ? "active bg-info" : string.Empty;
+<div class="col-md-9">
+    @if (Model.Pager != null && Model.Pager.TotalPages > 1)
+    {
+        <div class="product-pagination text-center clearfix">
+            <ul class="flat-pagination">
+                @if (Model.Pager.CurrentPage > 1)
+                {
+                    <li class="prev">
+                        <a data-href="@Url.Action("FilterProducts", "Home", new { pageNo = Model.Pager.CurrentPage - 1, sortBy = Model.SortBy, categoryID = Model.CategoryID })" class="pageDataLink"><i class="fa fa-angle-left"></i></a>
+                    </li>
+                }
 
-                            <li class="@activeClass"><a data-href="@Url.Action("FilterProducts", "Home", new { pageNo = page, sortBy = Model.SortBy, categoryID = Model.CategoryID })" title="" class="pageDataLink">@page</a></li>
-                        }
+                @for (var page = Model.Pager.StartPage; page <= Model.Pager.EndPage; page++)
+                {
+                    string activeClass = Model.Pager.CurrentPage == page ? "active bg-info" : string.Empty;
 
-                        @if (Model.Pager.CurrentPage < Model.Pager.TotalPages)
-                        {
-                            <li><a data-href="@Url.Action("FilterProducts", "Home", new { pageNo = Model.Pager.CurrentPage + 1, sortBy = Model.SortBy, categoryID = Model.CategoryID})" class="pageDataLink"><i class="fa fa-angle-right"></i></a></li>
-                        }
-                    </ul>
-                </div>
-            }
+                    <li class="@activeClass"><a data-href="@Url.Action("FilterProducts", "Home", new { pageNo = page, sortBy = Model.SortBy, categoryID = Model.CategoryID })" title="" class="pageDataLink">@page</a></li>
+                }
+
+                @if (Model.Pager.CurrentPage < Model.Pager.TotalPages)
+                {
+                    <li><a data-href="@Url.Action("FilterProducts", "Home", new { pageNo = Model.Pager.CurrentPage + 1, sortBy = Model.SortBy, categoryID = Model.CategoryID})" class="pageDataLink"><i class="fa fa-angle-right"></i></a></li>
+                }
+            </ul>
         </div>
-    </div>
+    }
 </div>
+ 
 <input type="hidden" id="SearchTerm" value="@Model.SearchTerm" />
 <input type="hidden" id="SortBy" value="@Model.SortBy" />
 <input type="hidden" id="CategoryID" value="@Model.CategoryID" />
