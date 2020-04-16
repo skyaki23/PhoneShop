@@ -21,6 +21,11 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
 <script src="~/Scripts/jquery.cookie.js"></script>
 <script src="~/Scripts/bootstrap.min.js"></script>
+
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+
 <link href="~/Content/stylesheets/font-awesome.css" rel="stylesheet" />
 <link href="~/Content/stylesheets/homeStyle.css" rel="stylesheet" />
 
@@ -43,17 +48,17 @@
                 <ol class="carousel-indicators">
                     @for (int j = 0; j < i; j++)
                     {
-                        <li data-target="#carousel" data-slide-to="@j.ToString()" class="@if (j == 0) { <text>active</text> } "></li>
+                        <li data-target="#carousel" data-slide-to="@j" class="@if (j == 0) { <text>active</text> } "></li>
                     }
                 </ol>
                 <div class="carousel-inner">
                     @for (int j = 0; j < i; j++)
                     {
                         <div class="item @if (j == 0) { <text>active</text> } ">
-                            <img class="center-block" style="width: auto; height: 500px;" src="@carouselImage["image" + j.ToString()]" alt="First slide">
+                            <img class="center-block" style="width: auto; height: 500px;" src="@carouselImage["image" + j]" alt="First slide">
                             <div class="carousel-caption">
-                                <h4>@carouselProductCategory["category" + j.ToString()]</h4>
-                                <h2>@carouselProductName["name" + j.ToString()]</h2>
+                                <h4>@carouselProductCategory["category" + j]</h4>
+                                <h2>@carouselProductName["name" + j]</h2>
                             </div>
                         </div>
                     }
@@ -102,6 +107,15 @@
                         }
                     </div>
                 </div>
+                <div class="widget widget-price">
+                    <h5 class="widget-title">價錢條件</h5>
+                    <div class="price-filter">
+                        <div id="slide-range"></div>
+                        <p class="amount" style="text-align: center; font-size: 16px">
+                            NT$ 0 - @Model.MaximumPrice
+                        </p>
+                    </div>
+                </div><!-- /.widget -->
                 <a href="@Url.Action("Index", "Home")" class="btn btn-danger">重設</a>
             </div>
         </div>
@@ -134,7 +148,14 @@
 
     function GetData(dUrl) {
         $.ajax({
-            url: dUrl
+            url: dUrl,
+            data: {
+                searchTerm: $("#SearchTerm").val(),
+                minimumPrice: priceSlider.slider("values", 0),
+                maximumPrice: priceSlider.slider("values", 1),
+                categoryID: $("#CategoryID").val(),
+                sortBy: $("#SortBy").val()
+            }
         })
         .done(function (response) {
             $("#productsDiv").html(response);
@@ -142,5 +163,39 @@
         .fail(function (XMLHttpRequest, textStatus, errorThrown) {
             alert("FAIL");
         })
+    }
+
+    var callTimeout;
+    var priceSlider = $("#slide-range").slider({
+        range: true,
+		min: 0,
+		max: @Model.MaximumPrice,
+        values: [0, @Model.MaximumPrice],
+        slide: function (event, ui) {
+            var minPrice = ui.values[0];
+            var maxPrice = ui.values[1];
+            $(".amount").text("NT$ " + minPrice + " - " + maxPrice);
+            clearTimeout(callTimeout);
+            callTimeout = setTimeout(PriceRangeChange, 500);
+        }
+    });
+
+    function PriceRangeChange() {
+        $.ajax({
+			url: '@Url.Action("FilterProducts", "Home")',
+            data: {
+                searchTerm: $("#SearchTerm").val(),
+                minimumPrice: priceSlider.slider("values", 0),
+                maximumPrice: priceSlider.slider("values", 1),
+                categoryID: $("#CategoryID").val(),
+                sortBy: $("#SortBy").val()
+			}
+		})
+        .done(function (response) {
+            $("#productsDiv").html(response);
+        })
+        .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+        	alert("FAIL");
+        });
     }
 </script>
