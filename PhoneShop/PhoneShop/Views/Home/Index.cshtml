@@ -1,8 +1,26 @@
 ﻿@using PhoneShop.code
 @model PhoneShop.ViewModels.HomeViewModel
 
+@{
+    var defaultImageURL = "/Content/images/system/placeholder-image.png";
+    Dictionary<string, string> carouselImage = new Dictionary<string, string>();
+    Dictionary<string, string> carouselProductCategory = new Dictionary<string, string>();
+    Dictionary<string, string> carouselProductName = new Dictionary<string, string>();
+    var i = 0;
+
+    foreach (var product in Model.CarouselProducts)
+    {
+        var imageURL = string.IsNullOrEmpty(product.ImageURL) ? defaultImageURL : product.ImageURL;
+        carouselImage.Add("image" + i, imageURL);
+        carouselProductCategory.Add("category" + i, product.Category.Name);
+        carouselProductName.Add("name" + i, product.Name);
+        i++;
+    }
+}
+
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
 <script src="~/Scripts/jquery.cookie.js"></script>
+<script src="~/Scripts/bootstrap.min.js"></script>
 <link href="~/Content/stylesheets/font-awesome.css" rel="stylesheet" />
 <link href="~/Content/stylesheets/homeStyle.css" rel="stylesheet" />
 
@@ -20,6 +38,39 @@
 
 <div class="container">
     <div class="row">
+        <div class="col-md-12">
+            <div id="carousel" class="carousel slide" data-ride="carousel" data-interval="3000">
+                <ol class="carousel-indicators">
+                    @for (int j = 0; j < i; j++)
+                    {
+                        <li data-target="#carousel" data-slide-to="@j.ToString()" class="@if (j == 0) { <text>active</text> } "></li>
+                    }
+                </ol>
+                <div class="carousel-inner">
+                    @for (int j = 0; j < i; j++)
+                    {
+                        <div class="item @if (j == 0) { <text>active</text> } ">
+                            <img class="center-block" style="width: auto; height: 500px;" src="@carouselImage["image" + j.ToString()]" alt="First slide">
+                            <div class="carousel-caption">
+                                <h4>@carouselProductCategory["category" + j.ToString()]</h4>
+                                <h2>@carouselProductName["name" + j.ToString()]</h2>
+                            </div>
+                        </div>
+                    }
+                </div>
+                <a href="#carousel" class="left carousel-control" data-slide="prev">
+                    <span class="icon-prev"></span>
+                </a>
+                <a href="#carousel" class="right carousel-control" data-slide="next">
+                    <span class="icon-next"></span>
+                </a>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="container" style="margin-top: 100px">
+    <div class="row">
         <div class="col-md-3">
             <div class="sidebar slidebar-shop">
                 <div class="widget widget-search">
@@ -35,19 +86,19 @@
                         產品排序依
                     </h5>
                     <ul>
-                        <li><a href="#" data-href="@Url.Action("FilterProducts", "Home", new { sortBy = (int)SortByEnums.Default, categoryID = Model.CategoryID })" class="dataLink">最新</a></li>
-                        <li><a href="#" data-href="@Url.Action("FilterProducts", "Home", new { sortBy = (int)SortByEnums.PriceLowToHigh, categoryID = Model.CategoryID })" class="dataLink">價錢低至高</a></li>
-                        <li><a href="#" data-href="@Url.Action("FilterProducts", "Home", new { sortBy = (int)SortByEnums.PriceHighToLow, categoryID = Model.CategoryID })" class="dataLink">價錢高至低</a></li>
+                        <li><a href="#" data-href="@Url.Action("FilterProducts", "Home", new { categoryID = Model.CategoryID, sortBy = (int)SortByEnums.Default })" class="dataLink">最新</a></li>
+                        <li><a href="#" data-href="@Url.Action("FilterProducts", "Home", new { categoryID = Model.CategoryID, sortBy = (int)SortByEnums.PriceLowToHigh })" class="dataLink">價錢低至高</a></li>
+                        <li><a href="#" data-href="@Url.Action("FilterProducts", "Home", new { categoryID = Model.CategoryID, sortBy = (int)SortByEnums.PriceHighToLow })" class="dataLink">價錢高至低</a></li>
                     </ul>
                 </div>
                 <div class="widget widget_tag">
                     <h5 class="widget-title">
-                        種類
+                        種類查詢
                     </h5>
                     <div class="tag-list">
                         @foreach (var category in Model.Categories)
                         {
-                            <a data-href="@Url.Action("FilterProducts", "Home", new { categoryID = category.ID, sortBy = Model.SortBy })" class="dataLink @(Model.CategoryID.HasValue && Model.CategoryID.Value == category.ID ? "active" : string.Empty)">@category.Name</a>
+                            <a href="#" data-href="@Url.Action("FilterProducts", "Home", new { categoryID = category.ID, sortBy = Model.SortBy })" class="dataLink">@category.Name</a>
                         }
                     </div>
                 </div>
@@ -71,7 +122,9 @@
 </div>
 
 <script>
-    $(".dataLink").click(function () {
+    $(".dataLink").click(function (e) {
+        e.preventDefault();
+
         var url = $(this).attr("data-href");
 
         if (url != "" || url != undefined) {

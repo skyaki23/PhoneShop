@@ -448,3 +448,7 @@
     padding-left: 15px;
     padding-right: 15px;
 }
+
+.carousel-caption h2, h4{
+    color: #c0c0c0;
+}

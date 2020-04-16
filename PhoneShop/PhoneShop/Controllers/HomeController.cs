@@ -28,6 +28,8 @@ namespace PhoneShop.Controllers
 
             model.Pager = new Pager(totalCount, pageNo, pageSize);
 
+            model.CarouselProducts = ProductService.Instance.GetCarouselProducts();
+
             return View(model);
         }
 

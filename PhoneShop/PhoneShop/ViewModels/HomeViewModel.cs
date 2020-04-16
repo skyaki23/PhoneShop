@@ -15,6 +15,7 @@ namespace PhoneShop.ViewModels
         public int? CategoryID { get; set; }
         public Pager Pager { get; set; }
         public string SearchTerm { get; set; }
+        public List<Product> CarouselProducts { get; set; }
     }
 
     public class FilterProductsViewModel

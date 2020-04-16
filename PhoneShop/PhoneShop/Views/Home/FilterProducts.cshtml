@@ -9,11 +9,12 @@
 <link href="~/Content/stylesheets/font-awesome.css" rel="stylesheet" />
 <link href="~/Content/stylesheets/homeStyle.css" rel="stylesheet" />
 
-<div class="filter-shop clearfix" style="float: right">
+<div class="filter-shop clearfix">
     @if (Model.Pager.TotalItems > 0)
     {
-        <p class="showing-product float-right">
-            顯示 @(((Model.Pager.CurrentPage - 1) * Model.Pager.PageSize) + 1) 至 @(((Model.Pager.CurrentPage - 1) * Model.Pager.PageSize) + (Model.Products.Count < Model.Pager.PageSize ? Model.Products.Count : Model.Pager.PageSize)) 個，
+
+        <p class="showing-product"  style="float: right">
+             顯示 @(((Model.Pager.CurrentPage - 1) * Model.Pager.PageSize) + 1) 至 @(((Model.Pager.CurrentPage - 1) * Model.Pager.PageSize) + (Model.Products.Count < Model.Pager.PageSize ? Model.Products.Count : Model.Pager.PageSize)) 個，
             共 @Model.Pager.TotalItems 個產品
         </p>
     }
@@ -50,7 +51,8 @@
     </div>
 }
 
-<div class="col-md-9">
+
+<div class="col-md-12">
     @if (Model.Pager != null && Model.Pager.TotalPages > 1)
     {
         <div class="product-pagination text-center clearfix">
@@ -77,7 +79,7 @@
         </div>
     }
 </div>
- 
+
 <input type="hidden" id="SearchTerm" value="@Model.SearchTerm" />
 <input type="hidden" id="SortBy" value="@Model.SortBy" />
 <input type="hidden" id="CategoryID" value="@Model.CategoryID" />

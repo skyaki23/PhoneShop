@@ -153,6 +153,14 @@ namespace PhoneShop.Services
             }
         }
 
+        public List<Product> GetCarouselProducts()
+        {
+            using(var context = new PhoneShopContext())
+            {
+                return context.Products.Include(x => x.Category).ToList().Take(5).ToList();
+            }
+        }
+
         public void SaveProduct(Product product)
         {
             using (var context = new PhoneShopContext())
