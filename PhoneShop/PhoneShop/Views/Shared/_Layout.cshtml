@@ -3,9 +3,11 @@
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>@ViewBag.Title 手機商店</title>
+    <title>手機商店</title>
     <link href="~/Content/bootstrap.min.css" rel="stylesheet" />
     <script src="~/Scripts/jquery-3.3.1.min.js"></script>
+    <script src="~/Scripts/jquery.cookie.js"></script>
+    
 </head>
 <body>
     <div class="navbar navbar-inverse navbar-fixed-top">
@@ -17,7 +19,7 @@
                 <ul class="nav navbar-nav">
                     @if (Session["Member"] == null && Session["Admin"] == null)
                     {
-                        <li>@Html.ActionLink("購物車", "ShoppingCart", "Home")</li>
+                        <li id="cartProductsCount">@Html.ActionLink("購物車(0)", "ShoppingCart", "Home")</li>
                     }
                     else if (Session["Admin"] != null)
                     {
@@ -27,7 +29,7 @@
                     }
                     else
                     {
-                        <li>@Html.ActionLink("購物車", "ShoppingCart", "Home")</li>
+                        <li id="cartProductsCount">@Html.ActionLink("購物車(0)", "ShoppingCart", "Home")</li>
                         <li>@Html.ActionLink("訂單查詢", "Index", "Order")</li>
                     }
                 </ul>
@@ -50,8 +52,10 @@
         @RenderBody()
         <hr />
         <footer>
-            <p>&copy; @DateTime.Now.Year 手機商店</p>
+            <p>&copy; 手機商店</p>
         </footer>
     </div>
+    
+    <script src="~/Content/main.js"></script>
 </body>
 </html>

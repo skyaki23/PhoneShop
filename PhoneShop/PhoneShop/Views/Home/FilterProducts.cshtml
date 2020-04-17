@@ -13,12 +13,10 @@
     <p class="showing-product" style="float: right">
         @if (Model.Pager.TotalItems > 0)
         {
-           <text>顯示 @(((Model.Pager.CurrentPage - 1) * Model.Pager.PageSize) + 1) 至 @(((Model.Pager.CurrentPage - 1) * Model.Pager.PageSize) + (Model.Products.Count< Model.Pager.PageSize ? Model.Products.Count : Model.Pager.PageSize)) 個，</text>
+            <text>顯示 @(((Model.Pager.CurrentPage - 1) * Model.Pager.PageSize) + 1) 至 @(((Model.Pager.CurrentPage - 1) * Model.Pager.PageSize) + (Model.Products.Count < Model.Pager.PageSize ? Model.Products.Count : Model.Pager.PageSize)) 個，</text>
         }
         共 @Model.Pager.TotalItems 個產品
     </p>
-    
-    
 </div>
 
 @foreach (var product in Model.Products)
@@ -103,6 +101,9 @@
 
         $.cookie("CartProducts", products.join('-'), { path: '/' }); // join("-") 分割 + -
 
-        swal("完成", "產品已加入購物車清單", "success");
+        swal("完成", "產品已加入購物車清單", "success").then(() => {
+            updateCartProducts();
+            window.location.reload();
+        });
     });
 </script>

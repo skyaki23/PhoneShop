@@ -1,6 +1,17 @@
 ﻿@using PhoneShop.code
 @model PhoneShop.ViewModels.HomeViewModel
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+<script src="~/Scripts/jquery.cookie.js"></script>
+<script src="~/Scripts/bootstrap.min.js"></script>
+
+<script src="~/Scripts/jquery-3.3.1.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
+<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
+
+<link href="~/Content/stylesheets/font-awesome.css" rel="stylesheet" />
+<link href="~/Content/stylesheets/homeStyle.css" rel="stylesheet" />
+
 @{
     var defaultImageURL = "/Content/images/system/placeholder-image.png";
     Dictionary<string, string> carouselImage = new Dictionary<string, string>();
@@ -17,17 +28,6 @@
         i++;
     }
 }
-
-<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
-<script src="~/Scripts/jquery.cookie.js"></script>
-<script src="~/Scripts/bootstrap.min.js"></script>
-
-<script src="~/Scripts/jquery-3.3.1.min.js"></script>
-<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/jquery-ui.min.js"></script>
-<link rel="stylesheet" href="https://ajax.googleapis.com/ajax/libs/jqueryui/1.12.1/themes/smoothness/jquery-ui.css">
-
-<link href="~/Content/stylesheets/font-awesome.css" rel="stylesheet" />
-<link href="~/Content/stylesheets/homeStyle.css" rel="stylesheet" />
 
 <div class="page-title parallax">
     <div class="container">
