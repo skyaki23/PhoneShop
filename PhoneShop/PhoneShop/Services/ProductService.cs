@@ -161,6 +161,14 @@ namespace PhoneShop.Services
             }
         }
 
+        public Product GetExistingProduct(Product product)
+        {
+            using (var context = new PhoneShopContext())
+            {
+                return context.Products.Where(x => x.Category.ID == product.Category.ID && x.Name == product.Name).FirstOrDefault();
+            }
+        }
+
         public void SaveProduct(Product product)
         {
             using (var context = new PhoneShopContext())

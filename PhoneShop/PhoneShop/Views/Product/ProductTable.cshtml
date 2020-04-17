@@ -36,7 +36,7 @@
                 <th class="font-weight-bold">產品名稱</th>
                 <th class="font-weight-bold">種類</th>
                 <th class="font-weight-bold">價格</th>
-                <th class="font-weight-bold">動作</th>
+                <th class="font-weight-bold" style="text-align: center">動作</th>
             </tr>
         </thead>
         <tbody>
@@ -48,9 +48,9 @@
                         <td>@product.Name</td>
                         <td> @product.Category.Name</td>
                         <td>@product.Price</td>
-                        <td>
-                            <button class="editBtn" data-id="@product.ID">Edit</button>
-                            <button class="deleteBtn" data-id="@product.ID">Delete</button>
+                        <td style="text-align: center">
+                            <button class="editBtn" data-id="@product.ID">修改</button>
+                            <button class="deleteBtn" data-id="@product.ID">刪除</button>
                         </td>
                     </tr>
                 }
@@ -63,6 +63,7 @@
             }
         </tbody>
     </table>
+    <span style="color:Red; font-size: 16px; font-weight: bold; text-align: center; display:block;">@TempData["ProductMessage"]</span>
 </div>
 
 <script>

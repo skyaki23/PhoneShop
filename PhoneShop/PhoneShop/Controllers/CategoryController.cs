@@ -45,7 +45,17 @@ namespace PhoneShop.Controllers
             var newCategory = new Category();
             newCategory.Name = model.Name;
             newCategory.ImageURL = model.ImageURL;
-            CategoryService.Instance.SaveCategory(newCategory);
+
+            if (CategoryService.Instance.GetExistingCategory(newCategory) == null)
+            {
+                CategoryService.Instance.SaveCategory(newCategory);
+
+                TempData["CategoryMessage"] = "種類新增成功: [" + newCategory.Name + "]";
+            }
+            else
+            {
+                TempData["CategoryMessage"] = "種類已存在: [" + newCategory.Name + "]";
+            }
 
             return RedirectToAction("CategoryTable");
         }

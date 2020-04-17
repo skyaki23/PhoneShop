@@ -169,7 +169,8 @@
     var priceSlider = $("#slide-range").slider({
         range: true,
 		min: 0,
-		max: @Model.MaximumPrice,
+        max: @Model.MaximumPrice,
+        step: 100,
         values: [0, @Model.MaximumPrice],
         slide: function (event, ui) {
             var minPrice = ui.values[0];

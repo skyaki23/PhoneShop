@@ -52,7 +52,16 @@ namespace PhoneShop.Controllers
             newProduct.Category = CategoryService.Instance.GetCategory(model.CategoryID);
             newProduct.ImageURL = model.ImageURL;
 
-            ProductService.Instance.SaveProduct(newProduct);
+            if (ProductService.Instance.GetExistingProduct(newProduct) == null)
+            {
+                ProductService.Instance.SaveProduct(newProduct);
+
+                TempData["ProductMessage"] = "產品新增成功: [" + newProduct.Name + "]";
+            }
+            else
+            {
+                TempData["ProductMessage"] = "產品已存在: [" + newProduct.Name + "]";
+            }
 
             return RedirectToAction("ProductTable");
         }

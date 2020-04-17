@@ -52,6 +52,14 @@ namespace PhoneShop.Services
             }
         }
 
+        public Category GetExistingCategory(Category category)
+        {
+            using (var context = new PhoneShopContext())
+            {
+                return context.Categories.Where(x => x.Name == category.Name).FirstOrDefault();
+            }
+        }
+
         public void SaveCategory(Category category)
         {
             using (var context = new PhoneShopContext())
