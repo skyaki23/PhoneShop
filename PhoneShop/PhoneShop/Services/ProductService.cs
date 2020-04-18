@@ -157,7 +157,7 @@ namespace PhoneShop.Services
         {
             using(var context = new PhoneShopContext())
             {
-                return context.Products.Include(x => x.Category).ToList().Take(5).ToList();
+                return context.Products.Include(x => x.Category).ToList().OrderByDescending(x => x.ID).Take(5).ToList();
             }
         }
 
