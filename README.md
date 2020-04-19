@@ -20,24 +20,24 @@
     * 顯示產品資訊並有加入購物車按鈕
     * 產品依照條件做顯示
     * 產品分頁
-[Imgur](https://i.imgur.com/AZgzFBq.png)
-[Imgur](https://i.imgur.com/nU8QVhb.png)
+![Imgur](https://i.imgur.com/AZgzFBq.png)
+![Imgur](https://i.imgur.com/nU8QVhb.png)
 
 * 2.購物車
     * 顯示加入購物車產品詳細資訊、購買數量及總價
-[Imgur](https://i.imgur.com/RYF4lAY.png)
+![Imgur](https://i.imgur.com/RYF4lAY.png)
 
 * 3.產品種類
     * 管理者做產品種類的增刪改查
     * 顯示產品種類擁有的產品
-[Imgur](https://i.imgur.com/jnfIdpL.png)
+![Imgur](https://i.imgur.com/jnfIdpL.png)
 
 * 4.產品
     * 管理者做產品的增刪改查
     * 顯示產品詳細資訊
-[Imgur](https://i.imgur.com/wqYAqeH.png)
+![Imgur](https://i.imgur.com/wqYAqeH.png)
 
 * 5.訂單
     * 顯示所有會員所下訂的訂單
     * 管理者修改訂單狀態的功能
-[Imgur](https://i.imgur.com/0XOe2uP.png)
+![Imgur](https://i.imgur.com/0XOe2uP.png)
