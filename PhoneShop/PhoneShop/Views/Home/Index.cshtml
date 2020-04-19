@@ -104,6 +104,7 @@
                         @foreach (var category in Model.Categories)
                         {
                             <a href="#" data-href="@Url.Action("FilterProducts", "Home", new { categoryID = category.ID, sortBy = Model.SortBy })" class="dataLink">@category.Name</a>
+                            <br />
                         }
                     </div>
                 </div>

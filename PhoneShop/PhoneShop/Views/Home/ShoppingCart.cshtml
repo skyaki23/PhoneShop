@@ -10,32 +10,33 @@
         <section class="flat-row main-shop shop-slidebar">
             <div class="container">
                 <div class="row">
+                    <div class="col-md-4 order-md-2 mb-4 @if (Session["Member"] != null) { <text>col-md-offset-2</text> } else { <text>col-md-offset-4</text> } ">
+                        <h4 class="d-flex justify-content-between align-items-center mb-3">
+                            <span class="text-muted">購物車清單</span>
+                        </h4>
+                        <ul class="list-group mb-3">
+                            @foreach (var product in Model.CartProducts)
+                            {
+                                var productQuantity = Model.CartProductIDs.Where(productID => productID == product.ID).Count();
+
+                                <li class="list-group-item d-flex justify-content-between" data-id="@product.ID">
+                                    <div>
+                                        <h5 class="my-0">@product.Name - 數量: @productQuantity</h5>
+                                    </div>
+                                    <span class="text-muted">單價:NT$ @product.Price - 小計:NT$ @(productQuantity * product.Price)</span>
+                                    <a class="DeleteCart" data-id="@product.ID">刪除</a>
+                                </li>
+                            }
+
+                            <li class="list-group-item d-flex justify-content-between" style="text-align: right">
+                                <span>總價:</span>
+                                <strong>NT$ @Model.CartProducts.Sum(x => x.Price * Model.CartProductIDs.Where(productID => productID == x.ID).Count())</strong>
+                            </li>
+                        </ul>
+                    </div>
+
                     @if (Session["Member"] != null)
                     {
-                        <div class="col-md-4 order-md-2 mb-4 col-md-offset-2">
-                            <h4 class="d-flex justify-content-between align-items-center mb-3">
-                                <span class="text-muted">購物車清單</span>
-                            </h4>
-                            <ul class="list-group mb-3">
-                                @foreach (var product in Model.CartProducts)
-                                {
-                                    var productQuantity = Model.CartProductIDs.Where(productID => productID == product.ID).Count();
-
-                                    <li class="list-group-item d-flex justify-content-between" data-id="@product.ID">
-                                        <div>
-                                            <h6 class="my-0">@product.Name - 數量: @productQuantity</h6>
-                                        </div>
-                                        <span class="text-muted">單價:NT$ @product.Price - 小計:NT$ @(productQuantity * product.Price)</span>
-                                        <a class="DeleteCart" data-id="@product.ID">刪除</a>
-                                    </li>
-                                }
-
-                                <li class="list-group-item d-flex justify-content-between" style="text-align: right">
-                                    <span>總價:</span>
-                                    <strong>NT$ @Model.CartProducts.Sum(x => x.Price * Model.CartProductIDs.Where(productID => productID == x.ID).Count())</strong>
-                                </li>
-                            </ul>
-                        </div>
                         <div class="col-md-6 order-md-1">
                             <h4 class="mb-3">會員資料</h4>
                             <form class="needs-validation" novalidate="">
@@ -58,34 +59,7 @@
                             </form>
                         </div>
                     }
-                    else
-                    {
-                        <div class="col-md-4 order-md-2 mb-4 col-md-offset-4">
-                            <h4 class="d-flex justify-content-between align-items-center mb-3">
-                                <span class="text-muted">購物車清單</span>
-                            </h4>
-                            <ul class="list-group mb-3">
-                                @foreach (var product in Model.CartProducts)
-                                {
-                                    var productQuantity = Model.CartProductIDs.Where(productID => productID == product.ID).Count();
-
-                                    <li class="list-group-item d-flex justify-content-between" data-id="@product.ID">
-                                        <div>
-                                            <h6 class="my-0">@product.Name - 數量: @productQuantity</h6>
-                                        </div>
-                                        <span class="text-muted">單價:NT$ @product.Price - 小計:NT$ @(productQuantity * product.Price)</span>
-                                        <a class="DeleteCart" data-id="@product.ID">刪除</a>
-                                    </li>
-                                }
-
-                                <li class="list-group-item d-flex justify-content-between">
-                                    <span>總價</span>
-                                    <strong>NT$ @Model.CartProducts.Sum(x => x.Price * Model.CartProductIDs.Where(productID => productID == x.ID).Count())</strong>
-                                </li>
-                            </ul>
-                        </div>
-                    }
-                </div>
+                 </div>
             </div>
         </section>
     </div>
@@ -117,28 +91,39 @@
     });
 
     $("#placeOrderBtn").click(function () {
-	    $.ajax({
-		    url: '@Url.Action("PlaceOrder", "Home")',
-		    data: {
-			    productIDs: '@string.Join("-", Model.CartProductIDs)'
-		    }
+        swal({
+            title: "確定?",
+            text: "確定下訂?",
+            icon: "warning",
+            buttons: true,
+            dangerMode: true,
         })
-        .done(function (response) {
-            if(response.success)
-            {
-        	    $.cookie('CartProducts', '', { path: '/' });
+        .then((chcek) => {
+            if (chcek) {
+                $.ajax({
+		            url: '@Url.Action("PlaceOrder", "Home")',
+		            data: {
+			            productIDs: '@string.Join("-", Model.CartProductIDs)'
+		            }
+                })
+                .done(function (response) {
+                    if(response.success)
+                    {
+        	            $.cookie('CartProducts', '', { path: '/' });
 
-        	    swal("完成", "訂單已完成.", "success").then(() => {
-        		    window.location = '@Url.Action("Index", "Home")';
-        	    });
-            }
-            else{
-                swal("失敗", "訂單無法完成", "warning");
+        	            swal("完成", "訂單已完成.", "success").then(() => {
+        		            window.location = '@Url.Action("Index", "Home")';
+        	            });
+                    }
+                    else{
+                        swal("失敗", "訂單無法完成", "warning");
+                    }
+                })
+                .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                    alert("FAIL");
+                });
             }
         })
-        .fail(function (XMLHttpRequest, textStatus, errorThrown) {
-            alert("FAIL");
-        });
     });
     </script>
 }
