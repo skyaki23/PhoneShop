@@ -8,6 +8,7 @@ namespace PhoneShop.Models
 {
     public class PhoneShopContext : DbContext, IDisposable
     {
+        public PhoneShopContext() : base("PhoneShopContext") { }
         public DbSet<Category> Categories { get; set; }
         public DbSet<Product> Products { get; set; }
         public DbSet<Member> Members { get; set; }

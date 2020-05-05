@@ -6,6 +6,7 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
 <script src="~/Scripts/jquery.cookie.js"></script>
+
 <link href="~/Content/stylesheets/font-awesome.css" rel="stylesheet" />
 <link href="~/Content/stylesheets/homeStyle.css" rel="stylesheet" />
 
@@ -25,9 +26,7 @@
 
     <div class="col-md-4">
         <div class="thumbnail">
-            <a href="#">
-                <img src="@imageURL" alt="image" style="height: 250px; width: 200px">
-            </a>
+            <img src="@imageURL" alt="image" style="height: 250px; width: 200px">
             <div class="caption">
                 <span style="text-align: center; display: block">@product.Name</span>
                 <div>
@@ -43,7 +42,6 @@
         </div>
     </div>
 }
-
 
 <div class="col-md-12">
     @if (Model.Pager != null && Model.Pager.TotalPages > 1)
