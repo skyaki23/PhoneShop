@@ -1,5 +1,8 @@
 # ASP.NET MVC 作品 - PhoneShop 手機商店
 
+## 網站連結
+* http://phoneshop.gearhostpreview.com/
+
 ### 開發環境
 * Visual Studio 2017
     
