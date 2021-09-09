@@ -171,14 +171,13 @@
         range: true,
 		min: 0,
         max: @Model.MaximumPrice,
-        step: 100,
         values: [0, @Model.MaximumPrice],
         slide: function (event, ui) {
             var minPrice = ui.values[0];
             var maxPrice = ui.values[1];
             $(".amount").text("NT$ " + minPrice + " - " + maxPrice);
             clearTimeout(callTimeout);
-            callTimeout = setTimeout(PriceRangeChange, 500);
+            callTimeout = setTimeout(PriceRangeChange, 100);
         }
     });
 

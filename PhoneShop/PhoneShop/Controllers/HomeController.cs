@@ -4,27 +4,37 @@ using PhoneShop.ViewModels;
 using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace PhoneShop.Controllers
 {
     public class HomeController : Controller
     {
+        /// <summary>
+        /// Home/Index
+        /// </summary>
+        /// <param name="searchTerm">搜尋關鍵字</param>
+        /// <param name="minimumPrice">篩選最低價格</param>
+        /// <param name="maximumPrice">篩選最高價格</param>
+        /// <param name="categoryID">篩選產品品牌</param>
+        /// <param name="sortBy">排序</param>
+        /// <param name="pageNo">顯示產品頁數</param>
+        /// <returns></returns>
         public ActionResult Index(string searchTerm, int? minimumPrice, int? maximumPrice, int? categoryID, int? sortBy, int? pageNo)
         {
-            var pageSize = 6;
+            var pageSize = 6; // 一頁中所顯示的產品數量(設定有6個)
 
+            //建立HomeViewModel物件，用於View上
             HomeViewModel model = new HomeViewModel();
-            model.SearchTerm = searchTerm;
-            model.MaximumPrice = ProductService.Instance.GetMaximumPrice();
-            model.Categories = CategoryService.Instance.GetAllCategories();
-            model.CategoryID = categoryID;
-            model.SortBy = sortBy; 
-            pageNo = pageNo.HasValue ? (pageNo.Value > 0 ? pageNo : 1) : 1;
+            model.SearchTerm = searchTerm; // 設定搜尋關鍵字
+            model.MaximumPrice = ProductService.Instance.GetMaximumPrice(); // 設定最高價格
+            model.Categories = CategoryService.Instance.GetAllCategories(); // 設定所有產品品牌
+            model.CategoryID = categoryID; // 設定產品品牌ID
+            model.SortBy = sortBy; // 設定排序
+            pageNo = pageNo.HasValue ? (pageNo.Value > 0 ? pageNo : 1) : 1; // 設定顯示產品頁數，若無值則預設為1
 
-            int totalCount = ProductService.Instance.SearchProductsCount(searchTerm, minimumPrice, maximumPrice, categoryID, sortBy);
-            model.Products = ProductService.Instance.SearchProducts(searchTerm, minimumPrice, maximumPrice, categoryID, sortBy, pageNo.Value, pageSize);
+            int totalCount = ProductService.Instance.SearchProductsCount(searchTerm, minimumPrice, maximumPrice, categoryID, sortBy); // 變數totalCount為篩選條件後的產品數量
+            model.Products = ProductService.Instance.SearchProducts(searchTerm, minimumPrice, maximumPrice, categoryID, sortBy, pageNo.Value, pageSize); // 設定篩選條件後的產品資訊
 
             model.Pager = new Pager(totalCount, pageNo, pageSize);
 

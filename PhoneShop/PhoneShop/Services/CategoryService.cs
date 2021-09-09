@@ -1,8 +1,6 @@
 ﻿using PhoneShop.Models;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Data.Entity;
 
 namespace PhoneShop.Services
@@ -44,6 +42,10 @@ namespace PhoneShop.Services
             }
         }
 
+        /// <summary>
+        /// 回傳所有產品品牌
+        /// </summary>
+        /// <returns></returns>
         public List<Category> GetAllCategories()
         {
             using (var context = new PhoneShopContext())
