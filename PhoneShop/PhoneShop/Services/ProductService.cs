@@ -200,10 +200,15 @@ namespace PhoneShop.Services
             }
         }
 
+        /// <summary>
+        /// 回傳產品輪播圖資訊
+        /// </summary>
+        /// <returns></returns>
         public List<Product> GetCarouselProducts()
         {
             using(var context = new PhoneShopContext())
             {
+                //為lazy load而使用Include，之後再取最新ID的前5筆資訊
                 return context.Products.Include(x => x.Category).ToList().OrderByDescending(x => x.ID).Take(5).ToList();
             }
         }
