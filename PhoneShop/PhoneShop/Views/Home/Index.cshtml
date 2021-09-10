@@ -82,12 +82,10 @@
         <div class="col-md-3">
             <div class="sidebar slidebar-shop">
                 <div class="widget widget-search">
-                    <form role="search" method="get" class="search-form" action="@Url.Action("Index", "Home")">
-                        <label>
-                            <input type="search" class="search-field" placeholder="搜尋..." value="" name="searchTerm">
-                        </label>
-                        <input type="submit" class="search-submit" value="搜尋">
-                    </form>
+                    <label>
+                        <input type="search" class="search-field" placeholder="搜尋..." value="">
+                    </label>
+                    <input type="submit" class="search-submit" value="搜尋" data-href="@Url.Action("FilterProducts", "Home")">
                 </div>
                 <div class="widget widget-sort-by">
                     <h5 class="widget-title">
@@ -101,12 +99,12 @@
                 </div>
                 <div class="widget widget_tag">
                     <h5 class="widget-title">
-                        種類查詢
+                        品牌查詢
                     </h5>
                     <div class="tag-list">
                         @foreach (var category in Model.Categories)
                         {
-                            <a href="#" data-href="@Url.Action("FilterProducts", "Home", new { categoryID = category.ID, sortBy = Model.SortBy })" class="dataLink">@category.Name</a>
+                            <a href="#" data-href="@Url.Action("FilterProducts", "Home", new { categoryID = category.ID, sortBy = Model.SortBy })" class="dataLink" style="color: #c5c5c5;">@category.Name</a>
                             <br />
                         }
                     </div>
@@ -142,15 +140,69 @@
 </div>
 
 <script>
+    var preCategoryID; // 設定有已按下的品牌查詢選項
+    var preSortBy; //  設定有已按下的產品排序選項
     $(".dataLink").click(function (e) {
         e.preventDefault(); // 不做跳轉網頁
-        
+
         //get attribute為data-href的值，
         //用於產品排序、品牌查詢被點擊時所用，用來做FilterProducts
+        var url = $(this).attr("data-href");
+        
+        if (url != "" || url != undefined) {
+
+            //若url含有品牌查詢ID，表示目前用品牌查詢做篩選
+            if (url.includes("categoryID")) {
+                //若之前已有用品牌查詢做篩選，將該選項css做回預設
+                if (preCategoryID != undefined) {
+                    preCategoryID.css({
+                        "font-weight": "Normal",
+                        "color": "#c5c5c5",
+                        "text-decoration": "none"
+                    });  
+                }
+
+                //將preCategoryID設為這次品牌查詢篩選的選項
+                preCategoryID = $(this);
+            }
+
+            //若url含有產品排序ID，表示目前用產品排序做篩選
+            if (url.includes("sortBy")) {
+                //若之前已有用產品排序做篩選，將該選項CSS做回預設
+                if (preSortBy != undefined) {
+                    preSortBy.css({
+                        "font-weight": "Normal",
+                        "color": "#c5c5c5",
+                        "text-decoration": "none"
+                    });
+                }
+
+                //將preSortBy設為這次產品排序篩選的選項
+                preSortBy = $(this);
+            }
+
+            GetData(url); // call GetData function
+
+            //增加CSS於產品排序、品牌查詢被點擊時
+            $(this).css({
+                "font-weight": "bold",
+                "color": "#000",
+                "text-decoration": "underline"
+            });
+        }
+    });
+
+    //搜尋關鍵字所用
+    $(".search-submit").click(function (e) {
+        e.preventDefault(); // 不做跳轉網頁
+
+        //get attribute為search-field、data-href的值
+        //用於產品排序、品牌查詢被點擊時所用，用來做FilterProducts
+        var searchTerm = $('.search-field').val();
         var url = $(this).attr("data-href"); 
 
-        if (url != "" || url != undefined) {
-            GetData(url);
+        if ((searchTerm != "" || searchTerm != undefined) && (url != "" || url != undefined)) {
+            GetData(url + "?searchTerm=" + searchTerm); // 增加搜尋關鍵字給予後端參數用
         }
     });
 
@@ -166,9 +218,10 @@
             }
         })
         .done(function (response) {
+            $('.search-field').val(""); // 等待後端回傳資料後，不論有無值都清空搜尋關鍵字
             $("#productsDiv").html(response);
         })
-        .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+        .fail(function () {
             alert("FAIL");
         })
     }
@@ -202,7 +255,7 @@
         .done(function (response) {
             $("#productsDiv").html(response);
         })
-        .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+        .fail(function () {
         	alert("FAIL");
         });
     }

@@ -11,6 +11,10 @@
 <link href="~/Content/stylesheets/homeStyle.css" rel="stylesheet" />
 
 <div class="filter-shop clearfix">
+    <p class="showing-filter" style="float: left">
+        @if (!string.IsNullOrEmpty(Model.SearchTerm)) { <text>搜尋關鍵字: @Model.SearchTerm</text>}
+    </p>
+
     <p class="showing-product" style="float: right">
         @if (Model.Pager.TotalItems > 0)
         {
