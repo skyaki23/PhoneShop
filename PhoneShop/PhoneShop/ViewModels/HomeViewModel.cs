@@ -41,11 +41,26 @@ namespace PhoneShop.ViewModels
 
     public class FilterProductsViewModel
     {
+        /// <summary>
+        /// 產品List
+        /// </summary>
         public List<Product> Products { get; set; }
-        public Pager Pager { get; set; }
-        public int? SortBy { get; set; }
-        public int? CategoryID { get; set; }
+        /// <summary>
+        /// 搜尋關鍵字
+        /// </summary>
         public string SearchTerm { get; set; }
+        /// <summary>
+        /// 產品品牌ID
+        /// </summary>
+        public int? CategoryID { get; set; }
+        /// <summary>
+        /// 排序
+        /// </summary>
+        public int? SortBy { get; set; }
+        /// <summary>
+        /// 產品分頁功能
+        /// </summary>
+        public Pager Pager { get; set; }
     }
 
     public class ShoppingCartViewModel

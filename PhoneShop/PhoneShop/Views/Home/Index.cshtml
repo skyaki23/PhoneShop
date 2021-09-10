@@ -13,18 +13,21 @@
 <link href="~/Content/stylesheets/homeStyle.css" rel="stylesheet" />
 
 @{
-    var defaultImageURL = "/Content/images/system/placeholder-image.png";
+    var defaultImageURL = "/Content/images/system/placeholder-image.png"; // 預設圖片
+
+    //設定產品輪播圖資訊
     Dictionary<string, string> carouselImage = new Dictionary<string, string>();
     Dictionary<string, string> carouselProductCategory = new Dictionary<string, string>();
     Dictionary<string, string> carouselProductName = new Dictionary<string, string>();
     var i = 0;
 
+    //取出每筆產品資料用於產品輪播圖
     foreach (var product in Model.CarouselProducts)
     {
-        var imageURL = string.IsNullOrEmpty(product.ImageURL) ? defaultImageURL : product.ImageURL;
-        carouselImage.Add("image" + i, imageURL);
-        carouselProductCategory.Add("category" + i, product.Category.Name);
-        carouselProductName.Add("name" + i, product.Name);
+        var imageURL = string.IsNullOrEmpty(product.ImageURL) ? defaultImageURL : product.ImageURL; // 若產品圖片為空則使用預設圖片
+        carouselImage.Add("image" + i, imageURL); // 設定產品輪播圖圖片
+        carouselProductCategory.Add("category" + i, product.Category.Name); // 設定產品輪播圖產品品牌
+        carouselProductName.Add("name" + i, product.Name); // 設定產品輪播圖產品名稱
         i++;
     }
 }
@@ -123,11 +126,13 @@
         <div class="col-md-9">
             <div id="productsDiv">
                 @{
+                    //建立FilterProductsViewModel物件，屬性資料用於FilterProducts PartialView
                     var filterProductsViewModel = new FilterProductsViewModel();
                     filterProductsViewModel.Products = Model.Products;
-                    filterProductsViewModel.Pager = Model.Pager;
+                    filterProductsViewModel.SearchTerm = Model.SearchTerm;
                     filterProductsViewModel.CategoryID = Model.CategoryID;
                     filterProductsViewModel.SortBy = Model.SortBy;
+                    filterProductsViewModel.Pager = Model.Pager;
 
                     Html.RenderPartial("FilterProducts", filterProductsViewModel);
                 }
@@ -138,9 +143,11 @@
 
 <script>
     $(".dataLink").click(function (e) {
-        e.preventDefault();
-
-        var url = $(this).attr("data-href");
+        e.preventDefault(); // 不做跳轉網頁
+        
+        //get attribute為data-href的值，
+        //用於產品排序、品牌查詢被點擊時所用，用來做FilterProducts
+        var url = $(this).attr("data-href"); 
 
         if (url != "" || url != undefined) {
             GetData(url);
