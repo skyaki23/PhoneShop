@@ -89,10 +89,10 @@
                 </div>
                 <div class="widget widget-sort-by">
                     <h5 class="widget-title">
-                        產品排序依
+                        產品排序
                     </h5>
                     <ul>
-                        <li><a href="#" data-href="@Url.Action("FilterProducts", "Home", new { categoryID = Model.CategoryID, sortBy = (int)SortByEnums.Default })" class="dataLink">最新</a></li>
+                        <li><a href="#" data-href="@Url.Action("FilterProducts", "Home", new { categoryID = Model.CategoryID, sortBy = (int)SortByEnums.Default })" class="dataLink">最新上傳</a></li>
                         <li><a href="#" data-href="@Url.Action("FilterProducts", "Home", new { categoryID = Model.CategoryID, sortBy = (int)SortByEnums.PriceLowToHigh })" class="dataLink">價錢低至高</a></li>
                         <li><a href="#" data-href="@Url.Action("FilterProducts", "Home", new { categoryID = Model.CategoryID, sortBy = (int)SortByEnums.PriceHighToLow })" class="dataLink">價錢高至低</a></li>
                     </ul>
@@ -148,9 +148,8 @@
         //get attribute為data-href的值，
         //用於產品排序、品牌查詢被點擊時所用，用來做FilterProducts
         var url = $(this).attr("data-href");
-        
-        if (url != "" || url != undefined) {
 
+        if (url != "" || url != undefined) {
             //若url含有品牌查詢ID，表示目前用品牌查詢做篩選
             if (url.includes("categoryID")) {
                 //若之前已有用品牌查詢做篩選，將該選項css做回預設
@@ -159,7 +158,15 @@
                         "font-weight": "Normal",
                         "color": "#c5c5c5",
                         "text-decoration": "none"
-                    });  
+                    });
+
+                    //若這次點擊與之前點擊的選項相同，表示取消查詢
+                    if (preCategoryID[0].text == $(this)[0].text) {
+                        preCategoryID = undefined; // 預設回undefined
+                        $("#CategoryID").val(""); // 清空於FilterProducts.html的input id CategoryID value
+                        GetData("/Home/FilterProducts"); // call GetData function for find all
+                        return;
+                    }
                 }
 
                 //將preCategoryID設為這次品牌查詢篩選的選項
@@ -175,6 +182,14 @@
                         "color": "#c5c5c5",
                         "text-decoration": "none"
                     });
+
+                    //若這次點擊與之前點擊的選項相同，表示取消排序
+                    if (preSortBy[0].text == $(this)[0].text) {
+                        preSortBy = undefined; // 預設回undefined
+                        $("#SortBy").val(""); // 清空於FilterProducts.html的input id SortBy value
+                        GetData("/Home/FilterProducts"); // call GetData function for find all
+                        return;
+                    }
                 }
 
                 //將preSortBy設為這次產品排序篩選的選項
@@ -199,7 +214,7 @@
         //get attribute為search-field、data-href的值
         //用於產品排序、品牌查詢被點擊時所用，用來做FilterProducts
         var searchTerm = $('.search-field').val();
-        var url = $(this).attr("data-href"); 
+        var url = $(this).attr("data-href");
 
         if ((searchTerm != "" || searchTerm != undefined) && (url != "" || url != undefined)) {
             GetData(url + "?searchTerm=" + searchTerm); // 增加搜尋關鍵字給予後端參數用
