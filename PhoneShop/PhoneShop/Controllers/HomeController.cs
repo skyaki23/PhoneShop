@@ -144,20 +144,31 @@ namespace PhoneShop.Controllers
             return RedirectToAction("Index");
         }
 
+        /// <summary>
+        /// Home/ShoppingCart
+        /// </summary>
+        /// <returns></returns>
         public ActionResult ShoppingCart()
         {
+            //建立ShoppingCartViewModel物件，用於View上
             ShoppingCartViewModel model = new ShoppingCartViewModel();
 
-            var CartProductsCookie = Request.Cookies["CartProducts"];
+            var CartProductsCookie = Request.Cookies["CartProducts"]; // find cookie CartProducts
 
             if (CartProductsCookie != null && !string.IsNullOrEmpty(CartProductsCookie.Value))
             {
+                //設定購物車產品ID List
+                //int.Parse(x)將value轉成int以便成List<int>
                 model.CartProductIDs = CartProductsCookie.Value.Split('-').Select(x => int.Parse(x)).ToList();
 
+                //設定購物車產品List
+                //因CartProductIDs可能含有重複產品ID，故用Distinct()
                 model.CartProducts = ProductService.Instance.GetProducts(model.CartProductIDs.Distinct().ToList());
 
+                //若有登入會員
                 if (Session["Member"] != null)
                 {
+                    //設定會員資訊
                     model.User = MemberService.Instance.GetMember((Session["Member"] as Member).UserId);
                 }
                 else

@@ -65,8 +65,17 @@ namespace PhoneShop.ViewModels
 
     public class ShoppingCartViewModel
     {
+        /// <summary>
+        /// 購物車產品ID List
+        /// </summary>
         public List<int> CartProductIDs { get; set; }
+        /// <summary>
+        /// 購物車產品List
+        /// </summary>
         public List<Product> CartProducts { get; set; }
+        /// <summary>
+        /// 會員資訊
+        /// </summary>
         public Member User { get; set; }
     }
 }

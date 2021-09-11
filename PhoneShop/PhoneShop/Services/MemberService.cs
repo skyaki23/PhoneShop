@@ -1,9 +1,5 @@
 ﻿using PhoneShop.Models;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
-using System.Data.Entity;
 
 namespace PhoneShop.Services
 {
@@ -28,10 +24,16 @@ namespace PhoneShop.Services
         }
         #endregion
 
+        /// <summary>
+        /// 回傳會員資訊
+        /// </summary>
+        /// <param name="UserId"></param>
+        /// <returns></returns>
         public Member GetMember(string UserId)
         {
             using (var context = new PhoneShopContext())
             {
+                //若未查詢到該筆會員資料，預設回傳null
                 return context.Members.Where(x => x.UserId == UserId).FirstOrDefault();
             }
         }

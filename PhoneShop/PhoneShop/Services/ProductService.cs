@@ -43,10 +43,16 @@ namespace PhoneShop.Services
             }
         }
 
+        /// <summary>
+        /// 回傳產品資訊List
+        /// </summary>
+        /// <param name="IDs">需回傳的產品ID List</param>
+        /// <returns></returns>
         public List<Product> GetProducts(List<int> IDs)
         {
             using (var context = new PhoneShopContext())
             {
+                //找出Products含有每筆IDs item的產品資訊後成List回傳
                 return context.Products.Where(product => IDs.Contains(product.ID)).ToList();
             }
         }

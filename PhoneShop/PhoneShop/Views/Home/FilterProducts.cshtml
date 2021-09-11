@@ -63,7 +63,7 @@
                 @if (Model.Pager.CurrentPage > 1)
                 {
                     <li class="prev">
-                        <a data-href="@Url.Action("FilterProducts", "Home", new { pageNo = Model.Pager.CurrentPage - 1, sortBy = Model.SortBy, categoryID = Model.CategoryID })" class="pageDataLink" style="cursor: pointer;"><i class="fa fa-angle-left"></i></a>
+                        <a data-href="@Url.Action("FilterProducts", "Home", new { pageNo = Model.Pager.CurrentPage - 1})" class="pageDataLink" style="cursor: pointer;"><i class="fa fa-angle-left"></i></a>
                     </li>
                 }
 
@@ -71,12 +71,12 @@
                 {
                     string activeClass = Model.Pager.CurrentPage == page ? "active bg-info" : string.Empty;
 
-                    <li class="@activeClass"><a data-href="@Url.Action("FilterProducts", "Home", new { pageNo = page, sortBy = Model.SortBy, categoryID = Model.CategoryID })" title="" class="pageDataLink" style="cursor: pointer;">@page</a></li>
+                    <li class="@activeClass"><a data-href="@Url.Action("FilterProducts", "Home", new { pageNo = page })" title="" class="pageDataLink" style="cursor: pointer;">@page</a></li>
                 }
 
                 @if (Model.Pager.CurrentPage < Model.Pager.TotalPages)
                 {
-                    <li><a data-href="@Url.Action("FilterProducts", "Home", new { pageNo = Model.Pager.CurrentPage + 1, sortBy = Model.SortBy, categoryID = Model.CategoryID})" class="pageDataLink" style="cursor: pointer;"><i class="fa fa-angle-right"></i></a></li>
+                    <li><a data-href="@Url.Action("FilterProducts", "Home", new { pageNo = Model.Pager.CurrentPage + 1})" class="pageDataLink" style="cursor: pointer;"><i class="fa fa-angle-right"></i></a></li>
                 }
             </ul>
         </div>
@@ -88,6 +88,7 @@
 <input type="hidden" id="CategoryID" value="@Model.CategoryID" />
 
 <script>
+    //分頁選項點選時
     $(".pageDataLink").click(function () {
         var url = $(this).attr("data-href");
         if (url != "" || url != undefined) {
@@ -100,20 +101,23 @@
         var existingCookieData = $.cookie('CartProducts');
 
         if (existingCookieData != undefined && existingCookieData != "" && existingCookieData != null) {
-            products = existingCookieData.split('-'); // cookie 有 CartProducts ， 分割 - ，回陣列；刷新判斷 products 存在
+            //若cookie存有CartProducts，用'-'做分割後將element回傳給products
+            //e.g. 21-19-30 => [21,19,30]，數字為產品ID
+            products = existingCookieData.split('-');
         } else {
-            products = []; // cookie 沒有 CartProducts
+            products = []; // cookie 沒有 CartProducts，products設為空陣列
         }
 
-        var productID = $(this).attr("data-id");
+        var productID = $(this).attr("data-id"); // 取得產品ID
 
-        products.push(productID);
+        products.push(productID); // 產品ID塞進products
 
-        $.cookie("CartProducts", products.join('-'), { path: '/' }); // join("-") 分割 + -
+        //join('-')將products中的element合併成字串，path為建立CartProducts cookie的頁面路徑
+        $.cookie("CartProducts", products.join('-'), { path: '/' });
 
         swal("完成", "產品已加入購物車清單", "success").then(() => {
-            updateCartProducts();
-            window.location.reload();
+            updateCartProducts(); // call updateCartProducts function in main.js
+            window.location.reload(); // 刷新畫面
         });
     });
 </script>

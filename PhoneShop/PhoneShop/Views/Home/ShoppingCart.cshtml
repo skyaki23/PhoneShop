@@ -11,11 +11,11 @@
         <section class="flat-row main-shop shop-slidebar">
             <div class="container">
                 <div class="row">
-                    <div class="col-md-4 order-md-2 mb-4 @if (Session["Member"] != null) { <text>col-md-offset-2</text> } else { <text>col-md-offset-4</text> } ">
+                    <div class="col-md-4 order-md-2 mb-4 @if (Model.User != null) { <text>col-md-offset-2</text> } else { <text>col-md-offset-4</text> } ">
                         <h4 class="d-flex justify-content-between align-items-center mb-3">
                             <span class="text-muted">購物車清單</span>
                         </h4>
-                        <ul class="list-group mb-3">
+                        <ul class="list-group mb-3" style="cursor: pointer;">
                             @foreach (var product in Model.CartProducts)
                             {
                                 var productQuantity = Model.CartProductIDs.Where(productID => productID == product.ID).Count();
@@ -47,29 +47,29 @@
                                         <input type="text" class="form-control" id="UserId" placeholder="userId" value="@Model.User.UserId" required="">
                                     </div>
                                 </div>
-
                                 <div class="row">
                                     <div class="col-md-6 mb-3" style="margin-top: 20px">
                                         <label for="UserEmail">信箱</label>
                                         <input type="email" class="form-control" id="UserEmail" placeholder="email@gmail.com" value="@Model.User.UserEmail" required="">
                                     </div>
                                 </div>
-
                                 <hr class="mb-4">
                                 <button id="placeOrderBtn" class="col-md-4 btn btn-primary btn-lg" type="button">建立訂單</button>
                             </form>
                         </div>
                     }
-                 </div>
+                </div>
             </div>
         </section>
     </div>
 
     <script>
+    //按下刪除購物車產品時
     $(".DeleteCart").click(function () {
         var cartProducts;
         var existingCookieData = $.cookie('CartProducts');
-
+        //若cookie存有CartProducts，用'-'做分割後將element回傳給products
+        //e.g. 21-19-30 => [21,19,30]，數字為產品ID
         if (existingCookieData != undefined && existingCookieData != "" && existingCookieData != null) {
             cartProducts = existingCookieData.split('-');
         }
@@ -77,17 +77,18 @@
             cartProducts = [];
         }
 
-        var productID = $(this).attr("data-id");
+        var productID = $(this).attr("data-id"); // 取得產品ID
 
-        var result = cartProducts.filter(function (element) {
+        cartProducts = cartProducts.filter(function (element) {
             return element != productID; // 刪除 productID (包括重複)，回傳陣列
         });
 
-        $.cookie("CartProducts", result.join('-'), { path: '/' }); // cookie CartProducts 為 result 內容
+        //join('-')將cartProducts中的element合併成字串，path為建立CartProducts cookie的頁面路徑
+        $.cookie("CartProducts", cartProducts.join('-'), { path: '/' });
 
         swal("完成", "產品已從購物車清單刪除", "success").then(() => {
-            updateCartProducts();
-            window.location.reload();
+            updateCartProducts(); // call updateCartProducts function in main.js
+            setTimeout(() => window.location.reload(), 100); // 刷新畫面
         });
     });
 
@@ -120,7 +121,7 @@
                         swal("失敗", "訂單無法完成", "warning");
                     }
                 })
-                .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+                .fail(function () {
                     alert("FAIL");
                 });
             }
