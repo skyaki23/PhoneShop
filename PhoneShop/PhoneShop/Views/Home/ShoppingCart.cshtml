@@ -92,6 +92,7 @@
         });
     });
 
+    //按下建立訂單時
     $("#placeOrderBtn").click(function () {
         swal({
             title: "確定?",
@@ -104,17 +105,19 @@
             if (chcek) {
                 $.ajax({
 		            url: '@Url.Action("PlaceOrder", "Home")',
-		            data: {
+                    data: {
+                        //join('-')將Model.CartProductIDs的element合併成字串，e.g. 21-19-30
 			            productIDs: '@string.Join("-", Model.CartProductIDs)'
 		            }
                 })
                 .done(function (response) {
                     if(response.success)
                     {
+                        //清空cookie CartProducts
         	            $.cookie('CartProducts', '', { path: '/' });
 
         	            swal("完成", "訂單已完成.", "success").then(() => {
-        		            window.location = '@Url.Action("Index", "Home")';
+        		            window.location = '@Url.Action("Index", "Home")'; // 回首頁
         	            });
                     }
                     else{

@@ -180,23 +180,36 @@ namespace PhoneShop.Controllers
             return View(model);
         }
 
+        /// <summary>
+        /// 回傳Json資料(success: Boolean)使判斷訂單下定成功與否
+        /// </summary>
+        /// <param name="productIDs">購物車產品ID字串</param>
+        /// <returns></returns>
         public JsonResult PlaceOrder(string productIDs)
         {
             if (!string.IsNullOrEmpty(productIDs))
             {
+                //字串productIDs用'-'做分割
+                //int.Parse(x)將value轉成int以便成List<int>
                 var productQuantities = productIDs.Split('-').Select(x => int.Parse(x)).ToList();
 
+                //得到訂單產品資訊
+                //因productQuantities可能含有重複產品ID，故用Distinct()
                 var products = ProductService.Instance.GetProducts(productQuantities.Distinct().ToList());
 
+                //建立Order物件，用於資料庫儲存訂單
                 Order newOrder = new Order();
-                newOrder.UserID = (Session["Member"] as Member).UserId;
-                newOrder.OrderTime = DateTime.Now;
-                newOrder.TotalAmount = products.Sum(x => x.Price * productQuantities.Where(productID => productID == x.ID).Count());
-                newOrder.Status = "尚未成立";
-
+                newOrder.UserID = (Session["Member"] as Member).UserId; // 設定會員ID
+                newOrder.OrderTime = DateTime.Now; // 設定訂單下訂時間
+                newOrder.TotalAmount = products.Sum(x => x.Price * productQuantities.Where(productID => productID == x.ID).Count()); // 設定訂單總價
+                newOrder.Status = "尚未成立"; // 設定訂單狀態
+                
+                // 設定訂單產品項目，利用products及productQuantities創建OrderItem帶屬性ProductID、Quantity後加入訂單產品項目
                 newOrder.OrderItems = new List<OrderItem>();
-                newOrder.OrderItems.AddRange(products.Select(x => new OrderItem() { ProductID = x.ID, Quantity = productQuantities.Where(productID => productID == x.ID).Count() }));
+                newOrder.OrderItems.AddRange(
+                    products.Select(x => new OrderItem() { ProductID = x.ID, Quantity = productQuantities.Where(productID => productID == x.ID).Count() }));
 
+                //儲存訂單
                 OrderService.Instance.SaveOrder(newOrder);
 
                 return Json(new { success = true }, JsonRequestBehavior.AllowGet);

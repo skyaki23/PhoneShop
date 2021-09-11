@@ -1,9 +1,7 @@
 ﻿using PhoneShop.Models;
-using System;
 using System.Collections.Generic;
 using System.Data.Entity;
 using System.Linq;
-using System.Web;
 
 namespace PhoneShop.Services
 {
@@ -62,6 +60,11 @@ namespace PhoneShop.Services
             }
         }
 
+        /// <summary>
+        /// 儲存訂單
+        /// </summary>
+        /// <param name="order">訂單資訊</param>
+        /// <returns></returns>
         public int SaveOrder(Order order)
         {
             using (var context = new PhoneShopContext())
