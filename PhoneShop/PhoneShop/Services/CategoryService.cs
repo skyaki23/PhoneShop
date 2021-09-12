@@ -59,14 +59,24 @@ namespace PhoneShop.Services
             }
         }
 
+        /// <summary>
+        /// 回傳產品品牌資訊
+        /// </summary>
+        /// <param name="category"></param>
+        /// <returns></returns>
         public Category GetExistingCategory(Category category)
         {
             using (var context = new PhoneShopContext())
             {
+                //回傳產品品牌資訊，預設回傳null
                 return context.Categories.Where(x => x.Name == category.Name).FirstOrDefault();
             }
         }
 
+        /// <summary>
+        /// 儲存品牌
+        /// </summary>
+        /// <param name="category">品牌資訊</param>
         public void SaveCategory(Category category)
         {
             using (var context = new PhoneShopContext())

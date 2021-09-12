@@ -41,28 +41,39 @@ namespace PhoneShop.Controllers
         }
 
         #region Create
+        /// <summary>
+        /// Category/Create GET
+        /// </summary>
+        /// <returns></returns>
         [HttpGet]
         public ActionResult Create()
         {
             return PartialView();
         }
 
+        /// <summary>
+        /// Category/Create POST
+        /// </summary>
+        /// <param name="model">NewCategoryViewModel model</param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult Create(NewCategoryViewModel model)
         {
+            //建立Category物件
             var newCategory = new Category();
-            newCategory.Name = model.Name;
-            newCategory.ImageURL = model.ImageURL;
+            newCategory.Name = model.Name; // 設定品牌名稱
+            newCategory.ImageURL = model.ImageURL; // 設定品牌圖片路徑
 
+            //若產品品牌不存在
             if (CategoryService.Instance.GetExistingCategory(newCategory) == null)
             {
-                CategoryService.Instance.SaveCategory(newCategory);
+                CategoryService.Instance.SaveCategory(newCategory); // 儲存品牌
 
-                TempData["CategoryMessage"] = "種類新增成功: [" + newCategory.Name + "]";
+                TempData["CategoryMessage"] = "種類新增成功: [" + newCategory.Name + "]"; // 加入TempData給予View顯示
             }
             else
             {
-                TempData["CategoryMessage"] = "種類已存在: [" + newCategory.Name + "]";
+                TempData["CategoryMessage"] = "種類已存在: [" + newCategory.Name + "]"; // 加入TempData給予View顯示
             }
 
             return RedirectToAction("CategoryTable");

@@ -62,7 +62,7 @@
             }
             else
             {
-                <tr><td colspan="3" class="text-danger">種類為空</td></tr>
+                <tr><td colspan="3" class="text-danger">品牌為空</td></tr>
             }
         </tbody>
     </table>
@@ -70,6 +70,7 @@
 </div>
 
 <script>
+    //按下新增按鈕
     $("#newBtn").click(function () {
 		$.ajax({
 			url: '@Url.Action("Create", "Category")'
@@ -79,7 +80,7 @@
 
             focusAction("actionContainer");
         })
-        .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+        .fail(function () {
         	alert("FAIL");
         });
     });

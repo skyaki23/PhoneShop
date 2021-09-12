@@ -18,9 +18,15 @@ namespace PhoneShop.ViewModels
 
     public class NewCategoryViewModel
     {
+        /// <summary>
+        /// 品牌名稱
+        /// </summary>
         [Required]
         [MinLength(1), MaxLength(50)]
-        public string Name { get; set; }    
+        public string Name { get; set; }
+        /// <summary>
+        /// 品牌圖片路徑
+        /// </summary>
         public string ImageURL { get; set; }
     }
 

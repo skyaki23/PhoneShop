@@ -71,9 +71,8 @@ namespace PhoneShop.Services
 
                 order.Status = status; // 修改訂單狀態文字
 
-                // 修改訂單
+                //修改訂單
                 context.Entry(order).State = EntityState.Modified;
-
                 return context.SaveChanges() > 0;
             }
         }
