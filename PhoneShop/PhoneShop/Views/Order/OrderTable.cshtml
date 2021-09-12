@@ -38,6 +38,7 @@
 </div>
 
 <script>
+    //按下訂單詳細按鈕時
     $(".detailBtn").click(function () {
         $.ajax({
             url: '@Url.Action("Detail", "Order")',
@@ -47,11 +48,11 @@
             }
         })
         .done(function (response) {
-            $("#actionContainer").html(response);
+            $("#actionContainer").html(response); //渲染至Order/Index <div id="actionContainer">
 
-            focusAction("actionContainer");
+            focusAction("actionContainer"); // call focusAction funciton in Order/Index
         })
-        .fail(function (XMLHttpRequest, textStatus, errorThrom) {
+        .fail(function () {
             alert("FAIL");
         });
     });

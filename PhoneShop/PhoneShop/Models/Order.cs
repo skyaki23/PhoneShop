@@ -10,7 +10,7 @@ namespace PhoneShop.Models
         /// </summary>
         public int ID { get; set; }
         /// <summary>
-        /// 會員ID
+        /// 會員帳號
         /// </summary>
         public string UserID { get; set; }
         /// <summary>
