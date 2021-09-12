@@ -1,15 +1,18 @@
 ﻿using PhoneShop.Models;
-using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
-using System.Linq;
-using System.Web;
 
 namespace PhoneShop.ViewModels
 {
     public class CategorySearchViewModel
     {
+        /// <summary>
+        /// 品牌List
+        /// </summary>
         public List<Category> Categories { get; set; }
+        /// <summary>
+        /// 搜尋關鍵字
+        /// </summary>
         public string SearchTerm { get; set; }
     }
 

@@ -34,10 +34,15 @@ namespace PhoneShop.Services
             }
         }
 
+        /// <summary>
+        /// 回傳品牌資訊List
+        /// </summary>
+        /// <returns></returns>
         public List<Category> GetCategories()
         {
             using (var context = new PhoneShopContext())
             {
+                //找到品牌資訊並帶上產品資訊
                 return context.Categories.Include(x => x.Products).ToList();
             }
         }
@@ -75,7 +80,7 @@ namespace PhoneShop.Services
         {
             using (var context = new PhoneShopContext())
             {
-                context.Entry(category).State = System.Data.Entity.EntityState.Modified;
+                context.Entry(category).State = EntityState.Modified;
                 context.SaveChanges();
             }
         }

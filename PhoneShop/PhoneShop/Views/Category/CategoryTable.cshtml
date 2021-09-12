@@ -33,7 +33,7 @@
     <table class="table table-striped">
         <thead>
             <tr>
-                <th class="font-weight-bold">種類</th>
+                <th class="font-weight-bold">品牌</th>
                 <th class="font-weight-bold">產品</th>
                 <th class="font-weight-bold" style="text-align: center">動作</th>
             </tr>
@@ -53,7 +53,7 @@
                                 <span>@product.Name | </span>
                             }
                         </td>
-                        <td style="text-align: center">
+                        <td style="text-align: center; width: 120px; vertical-align: middle;">
                             <button class="editBtn" data-id="@category.ID">修改</button>
                             <button class="deleteBtn" data-id="@category.ID">刪除</button>
                         </td>
@@ -131,34 +131,36 @@
         });
     });
 
+    //按下搜尋按鈕時
     $("#searchBtn").click(function () {
-		var searchValue = $("#searchText").val();
 		$.ajax({
 			url: '@Url.Action("CategoryTable", "Category")',
 			data: {
-				search: searchValue
+                searchTerm: $("#searchText").val()
 			}
 		})
         .done(function (response) {
             $("#tableContainer").html(response);
+            $("#actionContainer").html("");
         })
-        .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+        .fail(function () {
         	alert("FAIL");
         });
     });
 
+    //按下重設按鈕時
     $("#resetBtn").click(function () {
-        var searchValue = '';
 		$.ajax({
 			url: '@Url.Action("CategoryTable", "Category")',
 			data: {
-				search: searchValue
+                searchTerm: ""
 			}
 		})
         .done(function (response) {
             $("#tableContainer").html(response);
+            $("#actionContainer").html("");
         })
-        .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+        .fail(function () {
         	alert("FAIL");
         });
 	});

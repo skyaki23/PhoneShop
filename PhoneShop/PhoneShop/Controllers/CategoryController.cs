@@ -1,32 +1,40 @@
 ﻿using PhoneShop.Models;
 using PhoneShop.Services;
 using PhoneShop.ViewModels;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Web;
 using System.Web.Mvc;
 
 namespace PhoneShop.Controllers
 {
     public class CategoryController : Controller
     {
-        // GET: Category
+        /// <summary>
+        /// Category/Index
+        /// </summary>
+        /// <returns></returns>
         public ActionResult Index()
         {
             return View();
         }
 
-        public ActionResult CategoryTable(string search)
+        /// <summary>
+        /// Category/CategoryTable
+        /// </summary>
+        /// <param name="searchTerm">搜尋關鍵字</param>
+        /// <returns></returns>
+        public ActionResult CategoryTable(string searchTerm)
         {
+            //建立CategorySearchViewModel物件，用於View上
             CategorySearchViewModel model = new CategorySearchViewModel();
 
-            model.Categories = CategoryService.Instance.GetCategories();
+            model.Categories = CategoryService.Instance.GetCategories(); // 設定品牌資訊List
 
-            if (!string.IsNullOrEmpty(search))
+            if (!string.IsNullOrEmpty(searchTerm))
             {
-                model.SearchTerm = search;
-                model.Categories = model.Categories.Where(x => x.Name != null && x.Name.ToLower().Contains(search.ToLower())).ToList();
+                model.SearchTerm = searchTerm; // 設定搜尋關鍵字
+
+                //設定品牌資訊List為包含搜尋關鍵字
+                model.Categories = model.Categories.Where(x => x.Name != null && x.Name.ToLower().Contains(model.SearchTerm.ToLower())).ToList();
             }
 
             return PartialView("CategoryTable", model);
