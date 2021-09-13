@@ -26,10 +26,16 @@ namespace PhoneShop.Services
         }
         #endregion
 
+        /// <summary>
+        /// 回傳品牌資訊
+        /// </summary>
+        /// <param name="ID">品牌ID</param>
+        /// <returns></returns>
         public Category GetCategory(int ID)
         {
             using (var context = new PhoneShopContext())
             {
+                //用品牌ID找到欲查詢品牌資訊
                 return context.Categories.Find(ID);
             }
         }
@@ -86,21 +92,30 @@ namespace PhoneShop.Services
             }
         }
 
+        /// <summary>
+        /// 修改品牌
+        /// </summary>
+        /// <param name="category">品牌資訊</param>
         public void UpdateCategory(Category category)
         {
             using (var context = new PhoneShopContext())
             {
+                //修改品牌
                 context.Entry(category).State = EntityState.Modified;
                 context.SaveChanges();
             }
         }
 
+        /// <summary>
+        /// 刪除品牌
+        /// </summary>
+        /// <param name="ID">品牌ID</param>
         public void DeleteCategory(int ID)
         {
             using (var context = new PhoneShopContext())
             {
                 var category = context.Categories.Find(ID);
-
+                
                 context.Categories.Remove(category);
                 context.SaveChanges();
             }

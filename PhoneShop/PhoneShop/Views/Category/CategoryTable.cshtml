@@ -85,6 +85,7 @@
         });
     });
 
+    //按下修改按鈕
     $(".editBtn").click(function () {
 		$.ajax({
 			url: '@Url.Action("Edit", "Category")',
@@ -97,11 +98,12 @@
 
             focusAction("actionContainer");
         })
-        .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+        .fail(function () {
         	alert("FAIL");
         });
     });
 
+    //按下刪除按鈕
     $(".deleteBtn").click(function () {
         swal({
             title: "確定?",
@@ -125,7 +127,7 @@
                         icon: "success",
                     });
                 })
-                .fail(function (XMLHttpRequest, textStatus, errorThrom) {
+                .fail(function () {
                     alert("FAIL");
                 });
             }

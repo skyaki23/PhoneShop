@@ -81,26 +81,37 @@ namespace PhoneShop.Controllers
         #endregion Create
 
         #region Update
+        /// <summary>
+        /// Category/Edit GET
+        /// </summary>
+        /// <param name="ID">品牌ID</param>
+        /// <returns></returns>
         [HttpGet]
         public ActionResult Edit(int ID)
         {
+            //建立EditCategoryViewModel，用於View上
             EditCategoryViewModel model = new EditCategoryViewModel();
 
-            var category = CategoryService.Instance.GetCategory(ID);
+            var category = CategoryService.Instance.GetCategory(ID); // 得到品牌資訊
 
-            model.ID = category.ID;
-            model.Name = category.Name;      
-            model.ImageURL = category.ImageURL;
+            model.ID = category.ID; // 設定品牌ID
+            model.Name = category.Name; // 設定品牌名稱
+            model.ImageURL = category.ImageURL; // 設定品牌圖片路徑
 
             return PartialView(model);
         }
 
+        /// <summary>
+        /// Category/Edit POST
+        /// </summary>
+        /// <param name="model">EditCategoryViewModel model</param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult Edit(EditCategoryViewModel model)
         {
             var existingCategory = CategoryService.Instance.GetCategory(model.ID);
-            existingCategory.Name = model.Name;
-            existingCategory.ImageURL = model.ImageURL;
+            existingCategory.Name = model.Name; // 設定品牌ID
+            existingCategory.ImageURL = model.ImageURL; // 設定品牌圖片路徑
 
             CategoryService.Instance.UpdateCategory(existingCategory);
 
@@ -108,6 +119,11 @@ namespace PhoneShop.Controllers
         }
         #endregion Update
 
+        /// <summary>
+        /// Category/Delete POST
+        /// </summary>
+        /// <param name="ID">品牌ID</param>
+        /// <returns></returns>
         [HttpPost]
         public ActionResult Delete(int ID)
         {

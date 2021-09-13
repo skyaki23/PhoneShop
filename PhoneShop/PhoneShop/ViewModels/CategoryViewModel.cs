@@ -32,10 +32,19 @@ namespace PhoneShop.ViewModels
 
     public class EditCategoryViewModel
     {
+        /// <summary>
+        /// 品牌ID
+        /// </summary>
         public int ID { get; set; }
+        /// <summary>
+        /// 品牌名稱
+        /// </summary>
         [Required]
         [MinLength(1), MaxLength(50)]
         public string Name { get; set; }
+        /// <summary>
+        /// 品牌圖片路徑
+        /// </summary>
         public string ImageURL { get; set; }
     }
 }
