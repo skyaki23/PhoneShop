@@ -54,7 +54,7 @@ namespace PhoneShop.Services
         }
 
         /// <summary>
-        /// 回傳所有產品品牌
+        /// 回傳品牌List
         /// </summary>
         /// <returns></returns>
         public List<Category> GetAllCategories()
@@ -66,15 +66,15 @@ namespace PhoneShop.Services
         }
 
         /// <summary>
-        /// 回傳產品品牌資訊
+        /// 回傳品牌資訊
         /// </summary>
-        /// <param name="category"></param>
+        /// <param name="category">品牌資訊</param>
         /// <returns></returns>
         public Category GetExistingCategory(Category category)
         {
             using (var context = new PhoneShopContext())
             {
-                //回傳產品品牌資訊，預設回傳null
+                //回傳品牌資訊，預設回傳null
                 return context.Categories.Where(x => x.Name == category.Name).FirstOrDefault();
             }
         }

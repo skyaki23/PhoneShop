@@ -64,7 +64,7 @@ namespace PhoneShop.Controllers
             newCategory.Name = model.Name; // 設定品牌名稱
             newCategory.ImageURL = model.ImageURL; // 設定品牌圖片路徑
 
-            //若產品品牌不存在
+            //若品牌不存在
             if (CategoryService.Instance.GetExistingCategory(newCategory) == null)
             {
                 CategoryService.Instance.SaveCategory(newCategory); // 儲存品牌
@@ -109,11 +109,11 @@ namespace PhoneShop.Controllers
         [HttpPost]
         public ActionResult Edit(EditCategoryViewModel model)
         {
-            var existingCategory = CategoryService.Instance.GetCategory(model.ID);
+            var existingCategory = CategoryService.Instance.GetCategory(model.ID); // 得到品牌資訊
             existingCategory.Name = model.Name; // 設定品牌ID
             existingCategory.ImageURL = model.ImageURL; // 設定品牌圖片路徑
 
-            CategoryService.Instance.UpdateCategory(existingCategory);
+            CategoryService.Instance.UpdateCategory(existingCategory); // 修改品牌
 
             return RedirectToAction("CategoryTable");
         }
@@ -127,7 +127,7 @@ namespace PhoneShop.Controllers
         [HttpPost]
         public ActionResult Delete(int ID)
         {
-            CategoryService.Instance.DeleteCategory(ID);
+            CategoryService.Instance.DeleteCategory(ID); // 刪除品牌
 
             return RedirectToAction("CategoryTable");
         }

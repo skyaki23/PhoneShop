@@ -84,7 +84,6 @@
             .done(function (response) {
                 $("#tableContainer").html(response);
                 $("#actionContainer").html("");
-
                 focusAction("tableContainer");
             })
             .fail(function () {
@@ -113,7 +112,6 @@
     //按下取消按鈕
     $("#cancelBtn").click(function () {
         $("#actionContainer").html("");
-
         focusAction("tableContainer");
     });
 </script>

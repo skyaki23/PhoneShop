@@ -27,6 +27,11 @@ namespace PhoneShop.Services
         }
         #endregion
 
+        /// <summary>
+        /// 回傳產品資訊
+        /// </summary>
+        /// <param name="ID">品牌ID</param>
+        /// <returns></returns>
         public Product GetProduct(int ID)
         {
             using (var context = new PhoneShopContext())
@@ -35,10 +40,15 @@ namespace PhoneShop.Services
             }
         }
 
+        /// <summary>
+        /// 回傳產品資訊List
+        /// </summary>
+        /// <returns></returns>
         public List<Product> GetProducts()
         {
             using (var context = new PhoneShopContext())
             {
+                //找到產品資訊並帶上品牌資訊
                 return context.Products.Include(x => x.Category).ToList();
             }
         }
@@ -219,34 +229,52 @@ namespace PhoneShop.Services
             }
         }
 
+        /// <summary>
+        /// 回傳產品資訊
+        /// </summary>
+        /// <param name="product">產品資訊</param>
+        /// <returns></returns>
         public Product GetExistingProduct(Product product)
         {
             using (var context = new PhoneShopContext())
             {
+                //回傳產品資訊，預設回傳null
                 return context.Products.Where(x => x.Category.ID == product.Category.ID && x.Name == product.Name).FirstOrDefault();
             }
         }
 
+        /// <summary>
+        /// 儲存產品
+        /// </summary>
+        /// <param name="product">產品資訊</param>
         public void SaveProduct(Product product)
         {
             using (var context = new PhoneShopContext())
             {
-                context.Entry(product.Category).State = System.Data.Entity.EntityState.Unchanged;
-
+                context.Entry(product.Category).State = EntityState.Unchanged; // 不向資料庫增加品牌
                 context.Products.Add(product);
                 context.SaveChanges();
             }
         }
 
+        /// <summary>
+        /// 修改產品
+        /// </summary>
+        /// <param name="product"></param>
         public void UpdateProduct(Product product)
         {
             using (var context = new PhoneShopContext())
             {
-                context.Entry(product).State = System.Data.Entity.EntityState.Modified;
+                //修改產品
+                context.Entry(product).State = EntityState.Modified;
                 context.SaveChanges();
             }
         }
 
+        /// <summary>
+        /// 刪除產品
+        /// </summary>
+        /// <param name="ID"></param>
         public void DeleteProduct(int ID)
         {
             using (var context = new PhoneShopContext())

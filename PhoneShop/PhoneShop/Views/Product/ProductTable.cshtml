@@ -33,8 +33,8 @@
     <table class="table table-striped">
         <thead>
             <tr>
-                <th class="font-weight-bold">產品名稱</th>
-                <th class="font-weight-bold">種類</th>
+                <th class="font-weight-bold">名稱</th>
+                <th class="font-weight-bold">品牌</th>
                 <th class="font-weight-bold">價格</th>
                 <th class="font-weight-bold" style="text-align: center">動作</th>
             </tr>
@@ -48,7 +48,7 @@
                         <td>@product.Name</td>
                         <td> @product.Category.Name</td>
                         <td>@product.Price</td>
-                        <td style="text-align: center">
+                        <td style="text-align: center; width: 120px; vertical-align: middle;">
                             <button class="editBtn" data-id="@product.ID">修改</button>
                             <button class="deleteBtn" data-id="@product.ID">刪除</button>
                         </td>
@@ -67,20 +67,21 @@
 </div>
 
 <script>
+    //按下新增按鈕
     $("#newBtn").click(function () {
         $.ajax({
             url: '@Url.Action("Create", "Product")',
         })
         .done(function (response) {
             $("#actionContainer").html(response);
-
             focusAction("actionContainer");
         })
-        .fail(function (XMLHttpRequest, textStatus, errorThrom) {
+        .fail(function () {
             alert("FAIL");
         });
     });
 
+    //按下修改按鈕
     $(".editBtn").click(function () {
         $.ajax({
             url: '@Url.Action("Edit", "Product")',
@@ -90,14 +91,14 @@
         })
         .done(function (response) {
             $("#actionContainer").html(response);
-
             focusAction("actionContainer");
         })
-        .fail(function (XMLHttpRequest, textStatus, errorThrom) {
+        .fail(function () {
             alert("FAIL");
         });
     });
 
+    //按下刪除按鈕
     $(".deleteBtn").click(function () {
         swal({
             title: "確定?",
@@ -121,10 +122,44 @@
                         icon: "success",
                     });
                 })
-                .fail(function (XMLHttpRequest, textStatus, errorThrom) {
+                .fail(function () {
                     alert("FAIL");
                 });
             }
         });
     });
+
+    //按下搜尋按鈕時
+    $("#searchBtn").click(function () {
+		$.ajax({
+			url: '@Url.Action("ProductTable", "Product")',
+			data: {
+                searchTerm: $("#searchText").val()
+			}
+		})
+        .done(function (response) {
+            $("#tableContainer").html(response);
+            $("#actionContainer").html("");
+        })
+        .fail(function () {
+        	alert("FAIL");
+        });
+    });
+
+    //按下重設按鈕時
+    $("#resetBtn").click(function () {
+		$.ajax({
+			url: '@Url.Action("ProductTable", "Product")',
+			data: {
+                searchTerm: ""
+			}
+		})
+        .done(function (response) {
+            $("#tableContainer").html(response);
+            $("#actionContainer").html("");
+        })
+        .fail(function () {
+        	alert("FAIL");
+        });
+	});
 </script>

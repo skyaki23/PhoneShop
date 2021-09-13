@@ -28,7 +28,7 @@ namespace PhoneShop.Controllers
             HomeViewModel model = new HomeViewModel();
             model.SearchTerm = searchTerm; // 設定搜尋關鍵字
             model.MaximumPrice = ProductService.Instance.GetMaximumPrice(); // 設定最高價格
-            model.Categories = CategoryService.Instance.GetAllCategories(); // 設定所有產品品牌
+            model.Categories = CategoryService.Instance.GetAllCategories(); // 設定品牌List
             model.CategoryID = categoryID; // 設定產品品牌ID
             model.SortBy = sortBy; // 設定排序
             pageNo = pageNo.HasValue ? (pageNo.Value > 0 ? pageNo : 1) : 1; // 設定顯示的產品頁數，若無值則預設為1

@@ -8,11 +8,10 @@
 
 <form id="editProduct">
     <input type="hidden" name="ID" value="@Model.ID" />
-
     <div class="row">
         <div class="col-md-8">
             <div class="form-group">
-                <label>種類</label>
+                <label>品牌</label>
                 <select class="form-control" name="CategoryID">
                     @foreach (var category in Model.Categories)
                     {
@@ -46,71 +45,68 @@
 </form>
 
 <script>
+    //選擇圖片上傳
     $("#imageUpload").change(function () {
-        var element = this;
         var formData = new FormData();
-        var totalFiles = element.files.length;
-        for (var i = 0; i < totalFiles; i++) {
-            var file = element.files[i];
-            formData.append("Photo", file);
-        }
+        formData.append("Photo", this.files[0]);
+
         $.ajax({
             type: "POST",
             url: '@Url.Action("UploadImage", "Shared")',
-            dataType: "json",
+            dataType: "json", // 傳回 JSON 資料類型
             data: formData,
-            contentType: false,
-            processData: false
+            contentType: false, // 設定傳送資料至 Server 的編碼類型
+            processData: false // 設定是否自動將 data 轉為 query string
         })
         .done(function (response) {
-            console.log(response);
             if (response.Success) {
                 $("#ImageURL").val(response.ImageURL);
-                $("#productImage").attr("src", response.ImageURL);
+                $("#productImage").attr("src", response.ImageURL); // 上傳的圖片取代掉原先的圖片
             }
         })
-        .fail(function (XMLHttpRequest, textStatus, errorThrom) {
+        .fail(function () {
             alert("FAIL");
         });
     });
 
+    //驗證表單
     $("#editProduct").validate({
         rules: {
-            Name: {
+            Name: { // to Name element
                 required: true,
                 minlength: 1,
                 maxlength: 50
             },
-            Price: {
+            Price: { // to Price element
                 range: [1, 100000]
             }
         },
         messages: {
-            Name: {
+            Name: { // to Name element
                 required: '名稱不可為空白',
                 minlength: '名稱字數下限為1',
                 maxlength: '名稱字數上限為50'
             },
-            Price: {
+            Price: { // to Price element
                 range: '價錢上限至下限為1至100000元'
             }
         }
     });
 
+    //按下修改按鈕
     $("#updateBtn").click(function () {
         if ($("#editProduct").valid()) {
             $.ajax({
                 type: "POST",
                 url: '@Url.Action("Edit", "Product")',
-                data: $("#editProduct").serialize()
+                data: $("#editProduct").serialize() // 序列化表單元素
              })
             .done(function (response) {
                 $("#tableContainer").html(response);
                 $("#actionContainer").html("");
-
                 focusAction("tableContainer");
             })
-            .fail(function (XMLHttpRequest, textStatus, errorThrown) {
+            .fail(function () {
                 swal({
                     title: "警告",
                     text: "請輸入所有欄位",
@@ -128,12 +124,14 @@
                 buttons: true,
                 dangerMode: true
             });
+
+            document.querySelector('#Name-error').style.color = 'red'; // 驗證錯誤，故會顯示文字，加入css
         }
     });
 
+    //按下取消按鈕
     $("#cancelBtn").click(function () {
         $("#actionContainer").html("");
-
         focusAction("tableContainer");
     });
 </script>
