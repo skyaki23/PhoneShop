@@ -54,6 +54,35 @@ namespace PhoneShop.Services
         }
 
         /// <summary>
+        /// 回傳篩選條件後的產品資訊(for ProductTable)
+        /// </summary>
+        /// <param name="searchTerm">搜尋關鍵字</param>
+        /// <param name="pageNo">顯示產品頁數</param>
+        /// <param name="pageSize">一頁中所顯示的產品數量</param>
+        /// <returns></returns>
+        public List<Product> GetProducts(string searchTerm, int pageNo, int pageSize)
+        {
+            using (var context = new PhoneShopContext())
+            {
+                var products = context.Products.Include(x => x.Category).ToList(); // 先得到所有產品資訊帶上品牌資訊
+
+                //若有搜尋關鍵字
+                if (!string.IsNullOrEmpty(searchTerm))
+                {
+                    //則篩選出產品名稱包含搜尋關鍵字的產品資訊
+                    products = products.Where(x => x.Name.ToLower().Contains(searchTerm.ToLower())).ToList();
+                }
+
+                //e.g. pageNo = 1、pageSize = 6
+                //products.Skip((1 - 1) * 6) => 資料全取，
+                //products.Skip((1 - 1) * 6).Take(6) => 取前6筆資料。
+                //*若pageNo = 2，表示按產品列表第2頁，products.Skip((2 - 1) * 6).Take(6) =>
+                //Skip(6)使不取前6筆資料，只取之後的資料；接著Take(6)再取其前6筆資料
+                return products.Skip((pageNo - 1) * pageSize).Take(pageSize).ToList();
+            }
+        }
+
+        /// <summary>
         /// 回傳產品資訊List
         /// </summary>
         /// <param name="IDs">需回傳的產品ID List</param>

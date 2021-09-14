@@ -1,5 +1,11 @@
 ﻿@model PhoneShop.ViewModels.ProductSearchViewModel
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/sweetalert/2.1.2/sweetalert.min.js"></script>
+<script src="~/Scripts/jquery.cookie.js"></script>
+
+<link href="~/Content/stylesheets/font-awesome.css" rel="stylesheet" />
+<link href="~/Content/stylesheets/homeStyle.css" rel="stylesheet" />
+
 <div>
     <form method="post">
         <div class="row">
@@ -39,30 +45,71 @@
                 <th class="font-weight-bold" style="text-align: center">動作</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody style="height: 225px">
             @if (Model.Products != null && Model.Products.Count > 0)
             {
                 foreach (var product in Model.Products)
                 {
-                    <tr>
-                        <td>@product.Name</td>
-                        <td> @product.Category.Name</td>
-                        <td>@product.Price</td>
-                        <td style="text-align: center; width: 120px; vertical-align: middle;">
+                    <tr style="height: 45px">
+                        <td style="width: 40%">@product.Name</td>
+                        <td style="width: 20%">@product.Category.Name</td>
+                        <td style="width: 20%">@product.Price</td>
+                        <td style="text-align: center; width: 20%; vertical-align: middle;">
                             <button class="editBtn" data-id="@product.ID">修改</button>
                             <button class="deleteBtn" data-id="@product.ID">刪除</button>
                         </td>
                     </tr>
                 }
+
+                //補到有5個tr
+                for (int i = Model.Products.Count; i <= 5; i++)
+                {
+                    <tr style="height: 45px">
+                    </tr>
+                }
             }
             else
             {
-                <tr>
+                <tr style="height: 45px">
                     <td class="text-danger" colspan="4">產品為空</td>
                 </tr>
+
+                //補到有5個tr
+                for (int i = 2; i <= 5; i++)
+                {
+                    <tr style="height: 45px">
+                    </tr>
+                }
             }
         </tbody>
     </table>
+    <div class="col-md-12">
+        @if (Model.Pager != null && Model.Pager.TotalPages > 1)
+        {
+            <div class="product-pagination text-center clearfix">
+                <ul class="flat-pagination">
+                    @if (Model.Pager.CurrentPage > 1)
+                    {
+                        <li class="prev">
+                            <a data-href="@Url.Action("ProductTable", "Product", new { pageNo = Model.Pager.CurrentPage - 1})" class="pageDataLink" style="cursor: pointer;"><i class="fa fa-angle-left"></i></a>
+                        </li>
+                    }
+
+                    @for (var page = Model.Pager.StartPage; page <= Model.Pager.EndPage; page++)
+                    {
+                        string activeClass = Model.Pager.CurrentPage == page ? "active bg-info" : string.Empty;
+
+                        <li class="@activeClass"><a data-href="@Url.Action("ProductTable", "Product", new { pageNo = page })" title="" class="pageDataLink" style="cursor: pointer;">@page</a></li>
+                    }
+
+                    @if (Model.Pager.CurrentPage < Model.Pager.TotalPages)
+                    {
+                        <li><a data-href="@Url.Action("ProductTable", "Product", new { pageNo = Model.Pager.CurrentPage + 1})" class="pageDataLink" style="cursor: pointer;"><i class="fa fa-angle-right"></i></a></li>
+                    }
+                </ul>
+            </div>
+        }
+    </div>
     <span style="color:Red; font-size: 16px; font-weight: bold; text-align: center; display:block;">@TempData["ProductMessage"]</span>
 </div>
 
@@ -161,5 +208,25 @@
         .fail(function () {
         	alert("FAIL");
         });
-	});
+    });
+
+    //分頁選項點選時
+    $(".pageDataLink").click(function () {
+        var url = $(this).attr("data-href");
+        if (url != "" || url != undefined) {
+            $.ajax({
+                url: url,
+                data: {
+                    searchTerm: $("#searchText").val()
+                }
+            })
+            .done(function (response) {
+                $("#tableContainer").html(response);
+                $("#actionContainer").html("");
+            })
+            .fail(function () {
+                alert("FAIL");
+            })
+        }
+    });
 </script>

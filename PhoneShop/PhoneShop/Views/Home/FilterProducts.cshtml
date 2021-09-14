@@ -24,36 +24,30 @@
     </p>
 </div>
 
-@foreach (var product in Model.Products)
-{
-    var imageURL = string.IsNullOrEmpty(product.ImageURL) ? defaultImageURL : product.ImageURL;
+<div style="height: 744px">
+    @foreach (var product in Model.Products)
+    {
+        var imageURL = string.IsNullOrEmpty(product.ImageURL) ? defaultImageURL : product.ImageURL;
 
-    <div class="col-md-4">
-        <div class="thumbnail">
-            <img src="@imageURL" alt="image" style="height: 250px; width: 200px">
-            <div class="caption">
-                <span style="text-align: center; display: block">@product.Name</span>
-                <div>
-                    <ins>
-                        <span style="text-align: center; display: block">NT$ @product.Price</span>
-                    </ins>
-                </div>
+        <div class="col-md-4">
+            <div class="thumbnail">
+                <img src="@imageURL" alt="image" style="height: 250px; width: 200px">
+                <div class="caption">
+                    <span style="text-align: center; display: block">@product.Name</span>
+                    <div>
+                        <ins>
+                            <span style="text-align: center; display: block">NT$ @product.Price</span>
+                        </ins>
+                    </div>
 
-                <div>
-                    <a class="productAddToCart btn btn-primary" style="text-align: center; display: block" data-id="@product.ID">加入購物車</a>
+                    <div>
+                        <a class="productAddToCart btn btn-primary" style="text-align: center; display: block" data-id="@product.ID">加入購物車</a>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
-}
-
-@if (Model.Products.Count >= 1 && Model.Products.Count <= 3)
-{
-    //若顯示的產品列表只有1~3個，補加高度
-    <div class="col-md-12" style="height: 372px;">
-
-    </div>
-}
+    }
+</div>
 
 <div class="col-md-12">
     @if (Model.Pager != null && Model.Pager.TotalPages > 1)
@@ -96,6 +90,7 @@
         }
     });
 
+    //加入購物車按鈕點選
     var products;
     $(".productAddToCart").click(function () {
         var existingCookieData = $.cookie('CartProducts');
@@ -117,7 +112,6 @@
 
         swal("完成", "產品已加入購物車清單", "success").then(() => {
             updateCartProducts(); // call updateCartProducts function in main.js
-            window.location.reload(); // 刷新畫面
         });
     });
 </script>

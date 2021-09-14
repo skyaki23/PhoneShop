@@ -14,6 +14,10 @@ namespace PhoneShop.ViewModels
         /// 搜尋關鍵字
         /// </summary>
         public string SearchTerm { get; set; }
+        /// <summary>
+        /// 產品分頁功能
+        /// </summary>
+        public Pager Pager { get; set; }
     }
 
     public class NewProductViewModel

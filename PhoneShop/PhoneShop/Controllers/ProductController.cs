@@ -21,21 +21,22 @@ namespace PhoneShop.Controllers
         /// Product/ProductTable
         /// </summary>
         /// <param name="searchTerm">搜尋關鍵字</param>
+        /// <param name="pageNo">顯示的產品頁數</param>
         /// <returns></returns>
-        public ActionResult ProductTable(string searchTerm)
+        public ActionResult ProductTable(string searchTerm, int? pageNo)
         {
+            var pageSize = 5; // 一頁中所顯示的產品數量(設定有5個)
+
             //建立ProductSearchViewModel物件，用於View上
             ProductSearchViewModel model = new ProductSearchViewModel();
 
-            model.Products = ProductService.Instance.GetProducts(); // 設定產品資訊List
+            model.SearchTerm = searchTerm;// 設定搜尋關鍵字
 
-            if (!string.IsNullOrEmpty(searchTerm))
-            {
-                model.SearchTerm = searchTerm;// 設定搜尋關鍵字
+            int totalCount = ProductService.Instance.SearchProductsCount(searchTerm, null, null, null, null); // 變數totalCount為篩選條件後的產品數量
+            pageNo = pageNo.HasValue ? (pageNo.Value > 0 ? pageNo : 1) : 1; // 設定顯示的產品頁數，若無值則預設為1
 
-                //設定產品資訊List為包含搜尋關鍵字
-                model.Products = model.Products.Where(x => x.Name != null && x.Name.ToLower().Contains(model.SearchTerm.ToLower())).ToList();
-            }
+            model.Products = ProductService.Instance.GetProducts(searchTerm, pageNo.Value, pageSize); // 設定篩選條件後的產品資訊
+            model.Pager = new Pager(totalCount, pageNo, pageSize); // 設定產品分頁功能
 
             return PartialView("ProductTable", model);
         }
