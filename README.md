@@ -1,10 +1,10 @@
 # ASP.NET MVC 作品 - PhoneShop 手機商店
 
 ## 網站連結
-* http://phoneshop.gearhostpreview.com/
+* https://phoneshopmvc2020.azurewebsites.net/
 
 ### 開發環境
-* Visual Studio 2017
+* Visual Studio 2017 & 2019
     
 ### 使用技術
 * ASP.NET MVC
@@ -16,31 +16,33 @@
 * JavaScript
 * JQuery
 * AJAX
+* SQL Server
 
 ### 作品介紹
 ### 1.首頁
 * 輪播圖顯示最新上傳產品
-* 顯示產品資訊並有加入購物車按鈕
-* 產品依照條件做顯示
+* 顯示產品資訊並帶有加入購物車按鈕
+* 產品可依照條件(搜尋關鍵字、產品排序、品牌查詢、價錢)做顯示
 * 產品分頁
 
-![Imgur](https://i.imgur.com/AZgzFBq.png)
-![Imgur](https://i.imgur.com/nU8QVhb.png)
+![Imgur](https://i.imgur.com/G2Wl0dK)
+![Imgur](https://i.imgur.com/pr4voTL)
+![Imgur](https://i.imgur.com/7wvAHez)
 
 ---
 
 ### 2.購物車頁面
 * 顯示加入購物車產品詳細資訊、購買數量及總價
 
-![Imgur](https://i.imgur.com/RYF4lAY.png)
+![Imgur](https://i.imgur.com/0AdwRwq)
 
 ---
 
-### 3.產品種類頁面
-* 管理者做產品種類的增刪改查
-* 顯示產品種類擁有的產品
+### 3.產品品牌頁面
+* 管理者做產品品牌的增刪改查
+* 顯示產品品牌已上傳的產品
 
-![Imgur](https://i.imgur.com/jnfIdpL.png)
+![Imgur](https://i.imgur.com/l17XhuC)
 
 ---
 
@@ -48,7 +50,8 @@
 * 管理者做產品的增刪改查
 * 顯示產品詳細資訊
 
-![Imgur](https://i.imgur.com/wqYAqeH.png)
+![Imgur](https://i.imgur.com/Ak3IxZJ)
+![Imgur](https://i.imgur.com/5gNYNO1)
 
 ---
 
@@ -56,4 +59,4 @@
 * 顯示所有會員所下訂的訂單
 * 管理者修改訂單狀態的功能
 
-![Imgur](https://i.imgur.com/RRqdq28.png)
+![Imgur](https://i.imgur.com/51IsMtj)
