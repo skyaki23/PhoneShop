@@ -6,7 +6,7 @@
 * Service中建立各個獨立與資料庫利用LINQ等技術做資料增刪改查等行為的function，給予Controller呼叫使用。
 * Controller透過前端View的RenderAction、Action等請託找到對應的Controller function後，利用Service中與資料庫做溝通的function，完成所需行為或是得到物件屬性資料給與建立完的ViewModel物件用於View上。
 * View可藉由Razor語法將Controller傳遞至的ViewModel屬性資料繫節渲染至頁面上或是條件及迴圈等處理，而頁面上的元素可透過JavaScript做與前端的互動以及利用Ajax資料傳遞給Controller，完成所需行為。
-* 資料為非營利、非商業用途所使用，為個人學習技術所使用。
+* 資料為非營利、非商業用途所使用，僅為個人學習技術所使用。
 
 ## 網站連結
 * https://phoneshopmvc2020.azurewebsites.net/
