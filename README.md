@@ -1,4 +1,4 @@
-# ASP.NET MVC 作品 - PhoneShop 手機商店
+# ASP.NET MVC 練習作品 - PhoneShop 手機商店
 
 ## 網站連結
 * https://phoneshopmvc2020.azurewebsites.net/
