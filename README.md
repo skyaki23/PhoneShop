@@ -25,16 +25,16 @@
 * 產品可依照條件(搜尋關鍵字、產品排序、品牌查詢、價錢)做顯示
 * 產品分頁
 
-![Imgur](https://i.imgur.com/G2Wl0dK)
-![Imgur](https://i.imgur.com/pr4voTL)
-![Imgur](https://i.imgur.com/7wvAHez)
+![Imgur](https://i.imgur.com/G2Wl0dK.png)
+![Imgur](https://i.imgur.com/pr4voTL.png)
+![Imgur](https://i.imgur.com/7wvAHez.png)
 
 ---
 
 ### 2.購物車頁面
 * 顯示加入購物車產品詳細資訊、購買數量及總價
 
-![Imgur](https://i.imgur.com/0AdwRwq)
+![Imgur](https://i.imgur.com/0AdwRwq.png)
 
 ---
 
@@ -42,7 +42,7 @@
 * 管理者做產品品牌的增刪改查
 * 顯示產品品牌已上傳的產品
 
-![Imgur](https://i.imgur.com/l17XhuC)
+![Imgur](https://i.imgur.com/l17XhuC.png)
 
 ---
 
@@ -50,8 +50,8 @@
 * 管理者做產品的增刪改查
 * 顯示產品詳細資訊
 
-![Imgur](https://i.imgur.com/Ak3IxZJ)
-![Imgur](https://i.imgur.com/5gNYNO1)
+![Imgur](https://i.imgur.com/Ak3IxZJ.png)
+![Imgur](https://i.imgur.com/5gNYNO1.png)
 
 ---
 
@@ -59,4 +59,4 @@
 * 顯示所有會員所下訂的訂單
 * 管理者修改訂單狀態的功能
 
-![Imgur](https://i.imgur.com/51IsMtj)
+![Imgur](https://i.imgur.com/51IsMtj.png)
